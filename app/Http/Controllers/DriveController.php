@@ -12,7 +12,6 @@ class DriveController extends Controller
     public function index()
     {
         $drives = request()->user()->drives;
-//        ddd($drives);
         return view('drive.index', ['drives' => $drives]);
     }
 
@@ -21,7 +20,7 @@ class DriveController extends Controller
      */
     public function create()
     {
-        //
+        return view('drive.create');
     }
 
     /**
@@ -29,7 +28,7 @@ class DriveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        ddd($request->all());
     }
 
     /**

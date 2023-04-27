@@ -12,7 +12,23 @@ class RefuelController extends Controller
      */
     public function index()
     {
-        //
+        $all = Refuel::all();
+
+        $refuels = [];
+
+        foreach ($all as $refuel) {
+            $found = false;
+            foreach($refuel->drives as $drive){
+                if ($drive->user->id === auth()->user()->id) {
+                    $found = true;
+                }
+            }
+            if($found){
+                $refuels[] = $refuel;
+            }
+        }
+
+        return view('refuel.index', ['refuels' => $refuels]);
     }
 
     /**
