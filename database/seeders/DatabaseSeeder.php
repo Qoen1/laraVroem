@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
                         ->for($user)
                 )
                 ->create();
+            $user->cars()->attach($car);
         }
     }
 }

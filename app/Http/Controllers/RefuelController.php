@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Car;
 use App\Models\Refuel;
 use Illuminate\Http\Request;
 
-class CarController extends Controller
+class RefuelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $cars = auth()->user()->cars;
-
-        return view('car.index', ['cars' => $cars]);
+        //
     }
 
     /**
@@ -39,11 +36,9 @@ class CarController extends Controller
      */
     public function show(string $id)
     {
-        $car = Car::find($id);
-        $refuels = $car->refuels;
+        $refuel = Refuel::find($id);
 
-
-        return view('car.details',['refuels' => $refuels, 'car' => $car]);
+        return view('refuel.details',['refuel' => $refuel, 'drives' => $refuel->drives]);
     }
 
     /**

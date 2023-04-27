@@ -3,6 +3,7 @@
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\DriveController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RefuelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,8 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('drives', DriveController::class);
-    Route::resource('cars', CarController::class);
+    Route::resource('drives', DriveController::class)->name('index','drives');
+    Route::resource('refuels', RefuelController::class)->name('index','refuels');
+    Route::resource('cars', CarController::class)->name('index','cars');
 });
 
 require __DIR__.'/auth.php';

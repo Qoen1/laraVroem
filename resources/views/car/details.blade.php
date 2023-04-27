@@ -22,7 +22,7 @@
                             </div>
                         </div>
 {{--                        <div class="devider flex-fill"></div>--}}
-                        
+
                         <div class="flex-fill d-flex justify-content-center">NOOTNOOT</div>
                     </div>
                 </div>

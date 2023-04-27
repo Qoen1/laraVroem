@@ -36,7 +36,7 @@ class Car extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Car::class,'car_user','car_id','user_id');
     }
 
     public function refuels(): HasMany
