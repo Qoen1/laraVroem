@@ -19,6 +19,7 @@ class RefuelFactory extends Factory
         return [
             'timestamp' => $this->faker->dateTimeBetween('-1 year'),
             'liters' => $this->faker->numberBetween(10, 100),
+            'cost' => $this->faker->numberBetween(10, 100)
         ];
     }
 }

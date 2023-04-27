@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('timestamp');
             $table->integer('liters');
+            $table->decimal('cost');
             $table->foreignId('user_id');
             $table->foreignId('car_id');
             $table->timestamps();

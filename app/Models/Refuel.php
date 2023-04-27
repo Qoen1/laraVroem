@@ -27,4 +27,15 @@ class Refuel extends Model
     {
         return $this->hasMany(Drive::class);
     }
+
+    public function distance(){
+        $drives = $this->drives;
+
+        $distance = 0;
+        foreach ($drives as $drive){
+            $distance += $drive->distance();
+        }
+
+        return $distance;
+    }
 }

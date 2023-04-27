@@ -10,6 +10,11 @@ class Drive extends Model
 {
     use HasFactory;
 
+    public function distance(): int
+    {
+        return $this->end_odometer = $this->begin_odometer;
+    }
+
     #region Eloquent Relationships
 
     public function car(): BelongsTo

@@ -11,6 +11,22 @@ class Car extends Model
 {
     use HasFactory;
 
+    public function trackedDistance(){
+        $drives = $this->drives;
+
+        $distance = 0;
+
+        foreach ($drives as $drive) {
+            $distance += $drive->distance();
+        }
+
+        return $distance;
+    }
+
+    public function totalDistance(){
+        return $this->drives()->max('end_odometer');
+    }
+
     #region Eloquent Relationships
 
     public function drives(): HasMany
