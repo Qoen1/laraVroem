@@ -22,6 +22,9 @@
                 <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                     Log in
                 </x-nav-link>
+                <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                    Register
+                </x-nav-link>
             </div>
 
             <!-- Hamburger -->
