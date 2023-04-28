@@ -17,7 +17,6 @@ class DriveFactory extends Factory
     public function definition(): array
     {
         return [
-            'timestamp' => $this->faker->dateTimeBetween('-1 year'),
             'begin_odometer' => $this->faker->numberBetween(0, 50),
             'end_odometer' => $this->faker->numberBetween(50, 100),
         ];

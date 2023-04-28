@@ -40,10 +40,11 @@ class CarController extends Controller
     public function show(string $id)
     {
         $car = Car::find($id);
-        $refuels = $car->refuels;
+        $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
+        $drives = $car->drives()->where('refuel_id', '=', null)->get();
 
 
-        return view('car.details',['refuels' => $refuels, 'car' => $car]);
+        return view('car.details',['refuels' => $refuels, 'car' => $car, 'drives' => $drives]);
     }
 
     /**

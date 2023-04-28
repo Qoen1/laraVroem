@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('refuels', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('timestamp');
             $table->integer('liters');
             $table->decimal('cost');
             $table->foreignId('user_id');

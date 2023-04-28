@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('begin_odometer');
             $table->integer('end_odometer');
-            $table->dateTime('timestamp');
             $table->foreignId('car_id');
             $table->foreignId('user_id');
             $table->foreignId('refuel_id')->nullable();

@@ -17,7 +17,6 @@ class RefuelFactory extends Factory
     public function definition(): array
     {
         return [
-            'timestamp' => $this->faker->dateTimeBetween('-1 year'),
             'liters' => $this->faker->numberBetween(10, 100),
             'cost' => $this->faker->numberBetween(10, 100)
         ];

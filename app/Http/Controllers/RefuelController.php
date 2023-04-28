@@ -12,7 +12,7 @@ class RefuelController extends Controller
      */
     public function index()
     {
-        $all = Refuel::all();
+        $all = Refuel::all()->sortByDesc('created_at');
 
         $refuels = [];
 

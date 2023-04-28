@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/CSS/collapsable.css">
+<link rel="stylesheet" href="/CSS/app.css">
 
 <x-app-layout>
     <div class="py-12">
@@ -6,7 +6,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="display-1 text-center">{{$car->name}}</h1>
-                    <div class="d-flex flex-row justify-content-around">
+                    <div class="d-flex flex-row justify-content-around  ">
                         <div class="flex-fill">
                             <div class="row justify-content-start">
                                 <div class="col">license plate:</div>
@@ -21,10 +21,38 @@
                                 <div class="col">{{$car->trackedDistance()}}</div>
                             </div>
                         </div>
-{{--                        <div class="devider flex-fill"></div>--}}
+                        <div class="devider flex-fill"></div>
 
                         <div class="flex-fill d-flex justify-content-center">NOOTNOOT</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 class="text-center display-6">current set</h2>
+                    <table class="table">
+                        <thead>
+                            <th>timestamp</th>
+                            <th>distance</th>
+                            <th>begin odometer</th>
+                            <th>end odometer</th>
+                            <th>driver</th>
+                        </thead>
+                        @foreach($drives as $drive)
+                            <tr>
+                                <td>{{$drive->timestamp}}</td>
+                                <td>{{$drive->distance()}}</td>
+                                <td>{{$drive->begin_odometer}}</td>
+                                <td>{{$drive->end_odometer}}</td>
+                                <td>{{$drive->user->name}}</td>
+{{--                                <td><a class="btn btn-primary" href="/drives/{{$drive->id}}">details</a></td>--}}
+                            </tr>
+                        @endforeach
+                    </table>
                 </div>
             </div>
         </div>

@@ -12,6 +12,14 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
+                    {{--success message--}}
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                        <br>
+                    @endif
+
                     <table class="table">
                         <thead>
                             <th>date</th>
@@ -22,7 +30,7 @@
                         </thead>
                         @foreach($drives as $drive)
                             <tr>
-                                <td>{{ $drive->timestamp }}</td>
+                                <td>{{ $drive->created_at }}</td>
                                 <td>{{ $drive->begin_odometer }}</td>
                                 <td>{{ $drive->end_odometer }}</td>
                                 <td>{{ $drive->distance() }}</td>

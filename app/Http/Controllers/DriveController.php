@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
+use App\Models\Drive;
 use Illuminate\Http\Request;
 
 class DriveController extends Controller
@@ -11,7 +13,7 @@ class DriveController extends Controller
      */
     public function index()
     {
-        $drives = request()->user()->drives;
+        $drives = request()->user()->drives()->orderBy('created_at', 'desc')->get();
         return view('drive.index', ['drives' => $drives]);
     }
 
@@ -20,7 +22,7 @@ class DriveController extends Controller
      */
     public function create()
     {
-        return view('drive.create');
+        return view('drive.create', ['cars' => request()->user()->cars]);
     }
 
     /**
@@ -28,7 +30,41 @@ class DriveController extends Controller
      */
     public function store(Request $request)
     {
-        ddd($request->all());
+        $request->validate([
+            'car' => 'required|exists:cars,id',
+            'begin' => 'numeric',
+            'end' => 'required|numeric',
+        ]);
+        //save in variables
+        $car = Car::find($request['car']);
+        $begin = $request['begin'];
+        $end = $request['end'];
+        $driver = auth()->user();
+
+        //validate begin and end
+        if($begin > $end){
+            return redirect()->back()->withErrors(['begin' => 'Begin must be smaller than end']);
+        }
+
+        //create drive
+        $drive = new Drive();
+        //if the $begin > 0, set begin_odometer to $begin. otherwise set begin_odometer to the last drive's end_odometer
+        if($begin > 0){
+            $drive->begin_odometer = $begin;
+        } else {
+            $lastDrive = $car->drives()->orderBy('created_at', 'desc')->first();
+            if($lastDrive){
+                $drive->begin_odometer = $lastDrive->end_odometer;
+            } else {
+                $drive->begin_odometer = 0;
+            }
+        }
+        $drive->end_odometer = $end;
+        $drive->car()->associate($car);
+        $drive->user()->associate($driver);
+        $drive->save();
+
+        redirect()->action([DriveController::class, 'index'])->with('success', 'Drive created');
     }
 
     /**
