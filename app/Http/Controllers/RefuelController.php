@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
 use App\Models\Refuel;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,8 @@ class RefuelController extends Controller
      */
     public function create()
     {
-        //
+        $cars = auth()->user()->cars;
+        return view('refuel.create', ['cars' => $cars]);
     }
 
     /**
@@ -44,7 +46,32 @@ class RefuelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'car' => 'required|exists:cars,id',
+            'liters' => 'required|numeric',
+            'cost' => 'required|numeric',
+        ]);
+
+        $car = Car::find($request['car']);
+        $liters = $request['liters'];
+        $cost = $request['cost'];
+        $user = auth()->user();
+
+        $drives = $car->drives()->where('refuel_id', '=', null)->get();
+
+        $refuel = new Refuel();
+        $refuel->car()->associate($car);
+        $refuel->user()->associate($user);
+        $refuel->liters = $liters;
+        $refuel->cost = $cost;
+        $refuel->save();
+
+        foreach ($drives as $drive) {
+            $drive->refuel()->associate($refuel);
+            $drive->save(); 
+        }
+
+        return redirect()->action([RefuelController::class, 'show'], ['refuel' => $refuel, 'drives' => $refuel->drives])->with('success', 'Refuel added successfully');
     }
 
     /**

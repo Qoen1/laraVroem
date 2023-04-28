@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100 d-flex justify-content-around">
                     <a class="btn btn-primary" href="drives/create">Add Drive</a>
                     <div class="devider"></div>
-                    <a class="btn btn-primary" href="drives">Add Refuel</a>
+                    <a class="btn btn-primary" href="refuels/create">Add Refuel</a>
                 </div>
             </div>
         </div>
