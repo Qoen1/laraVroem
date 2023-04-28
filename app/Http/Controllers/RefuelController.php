@@ -68,7 +68,7 @@ class RefuelController extends Controller
 
         foreach ($drives as $drive) {
             $drive->refuel()->associate($refuel);
-            $drive->save(); 
+            $drive->save();
         }
 
         return redirect()->action([RefuelController::class, 'show'], ['refuel' => $refuel, 'drives' => $refuel->drives])->with('success', 'Refuel added successfully');

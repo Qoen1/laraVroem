@@ -57,7 +57,7 @@ class User extends Authenticatable
 
     public function cars(): BelongsToMany
     {
-        return $this->belongsToMany(Car::class,'car_user','user_id','car_id');
+        return $this->belongsToMany(Car::class);
     }
     #endregion
 }
