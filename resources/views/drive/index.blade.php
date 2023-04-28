@@ -20,6 +20,10 @@
                         <br>
                     @endif
 
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-outline-primary" href="drives/create">Add Drive</a>
+                    </div>
+
                     <table class="table">
                         <thead>
                             <th>date</th>

@@ -14,7 +14,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="/drives" method="post">
                         @csrf
-                        <button type="button" class="btn btn-outline-primary" onclick="toggle()" id="toggleBtn">+</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="toggle()" id="toggleBtn">begin odometer</button>
                         <div class="row mb-3" style="display: none" id="toggled">
                             <label for="begin" class="col-sm-2 col-form-label">Begin odometer</label>
                             <div class="col-sm-10">
@@ -56,7 +56,7 @@
             y.innerText = "-";
         } else {
             x.style.display = "none";
-            y.innerText = "+";
+            y.innerText = "begin odometer";
         }
     }
 </script>
