@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\DriveApiController;
+use App\Http\Controllers\Api\RefuelApiController;
 use App\Models\Car;
 use App\Models\Drive;
 use Illuminate\Http\Request;
@@ -22,5 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::middleware('auth:sanctum')->group(function (){
-    Route::post('/addDrive', [\App\Http\Controllers\Api\CarApiController::class, 'add']);
+    Route::middleware('role:admin')->group(function (){
+        Route::get('/cars', function (){
+            return Car::all();
+        });
+        Route::post('/addDrive', [DriveApiController::class, 'add']);
+        Route::post('/addRefuel', [RefuelApiController::class, 'add']);
+    });
 });
