@@ -19,10 +19,10 @@
 
                     <table class="table">
                         <thead>
-                        <th>date</th>
-                        <th>begin odometer</th>
-                        <th>end odometer</th>
-                        <th>distance</th>
+                        <th>name</th>
+                        <th>licenseplate</th>
+                        <th>total driven</th>
+                        <th>total tracked</th>
                         <th></th>
                         </thead>
                         @foreach($cars as $car)

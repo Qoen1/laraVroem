@@ -26,7 +26,7 @@
                         </thead>
                         @foreach($refuels as $refuel)
                             <tr>
-                                <td>{{ $refuel->created_at }}</td>
+                                <td>{{ $refuel->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $refuel->distance() }}</td>
                                 <td>{{ $refuel->car->name }}</td>
                                 <td><a class="btn btn-primary" href="refuels/{{$refuel->id}}">details</a></td>

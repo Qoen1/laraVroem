@@ -36,7 +36,7 @@
                     <h2 class="text-center display-6">current set</h2>
                     <table class="table">
                         <thead>
-                            <th>timestamp</th>
+                            <th>created at</th>
                             <th>distance</th>
                             <th>begin odometer</th>
                             <th>end odometer</th>
@@ -44,7 +44,7 @@
                         </thead>
                         @foreach($drives as $drive)
                             <tr>
-                                <td>{{$drive->timestamp}}</td>
+                                <td>{{$drive->created_at}}</td>
                                 <td>{{$drive->distance()}}</td>
                                 <td>{{$drive->begin_odometer}}</td>
                                 <td>{{$drive->end_odometer}}</td>
@@ -63,7 +63,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <table class="table">
                         <thead>
-                            <th>timestamp</th>
+                            <th>created at</th>
                             <th>distance</th>
                             <th>liters</th>
                             <th>cost</th>
@@ -71,7 +71,7 @@
                         </thead>
                         @foreach($refuels as $refuel)
                             <tr>
-                                <td>{{$refuel->timestamp}}</td>
+                                <td>{{$refuel->created_at->format('d-m-Y') }}</td>
                                 <td>{{$refuel->distance()}}</td>
                                 <td>{{$refuel->liters}}</td>
                                 <td>{{$refuel->cost}}</td>
