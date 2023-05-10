@@ -4,6 +4,12 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 d-flex justify-content-center">
                     <h1 class="display-1">Add Drive</h1>
+                    @if($errors->any())
+                        <div class="alert alert-danger ">
+                            {{ $errors->all()[0] }}
+                        </div>
+                        <br>
+                    @endif
                 </div>
             </div>
         </div>
