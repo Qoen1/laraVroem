@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="end" class="col-sm-2 col-form-label">End odometer</label>
+                      |between:0,9999.99      <label for="end" class="col-sm-2 col-form-label">End odometer</label>
                             <div class="col-sm-10">
                                 <input type="number" class="form-control" name="end">
                             </div>
