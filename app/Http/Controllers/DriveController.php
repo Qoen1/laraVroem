@@ -32,19 +32,15 @@ class DriveController extends Controller
     {
         $request->validate([
             'car' => 'required|exists:cars,id',
-            'begin' => 'numeric',
-            'end' => 'required|numeric',
+            'begin' => 'numeric|between:0,99999999999999999999',
+            'end' => 'numeric|nullable|between:0,99999999999999999999',
         ]);
+//        ddd($request->all());
         //save in variables
         $car = Car::find($request['car']);
         $begin = $request['begin'];
         $end = $request['end'];
         $driver = auth()->user();
-
-        //validate begin and end
-        if($begin > $end){
-            return redirect()->back()->withErrors(['begin' => 'Begin must be smaller than end']);
-        }
 
         //create drive
         $drive = new Drive();
@@ -59,12 +55,18 @@ class DriveController extends Controller
                 $drive->begin_odometer = 0;
             }
         }
+
+        //validate begin and end
+        if($begin > $end){
+            return redirect()->back()->withErrors(['begin' => 'Begin must be smaller than end']);
+        }
+        
         $drive->end_odometer = $end;
         $drive->car()->associate($car);
         $drive->user()->associate($driver);
         $drive->save();
 
-        redirect()->action([DriveController::class, 'index'])->with('success', 'Drive created');
+        return redirect('/drives')->with('success', 'Drive created');
     }
 
     /**
