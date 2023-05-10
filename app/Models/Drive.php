@@ -12,7 +12,7 @@ class Drive extends Model
 
     public function distance(): int
     {
-        return $this->end_odometer = $this->begin_odometer;
+        return $this->end_odometer - $this->begin_odometer;
     }
 
     #region Eloquent Relationships

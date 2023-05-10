@@ -4,6 +4,12 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 d-flex justify-content-center">
                     <h1 class="display-1">My Refuels</h1>
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                        <br>
+                    @endif
                 </div>
             </div>
         </div>
@@ -26,7 +32,7 @@
                         </thead>
                         @foreach($refuels as $refuel)
                             <tr>
-                                <td>{{ $refuel->created_at }}</td>
+                                <td>{{ $refuel->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $refuel->distance() }}</td>
                                 <td>{{ $refuel->car->name }}</td>
                                 <td><a class="btn btn-primary" href="refuels/{{$refuel->id}}">details</a></td>
