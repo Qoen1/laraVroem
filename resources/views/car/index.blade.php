@@ -4,6 +4,12 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 d-flex justify-content-center">
                     <h1 class="display-1">My Cars</h1>
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                        <br>
+                    @endif
                 </div>
             </div>
         </div>
@@ -19,10 +25,10 @@
 
                     <table class="table">
                         <thead>
-                        <th>date</th>
-                        <th>begin odometer</th>
-                        <th>end odometer</th>
-                        <th>distance</th>
+                        <th>name</th>
+                        <th>licenseplate</th>
+                        <th>total driven</th>
+                        <th>total tracked</th>
                         <th></th>
                         </thead>
                         @foreach($cars as $car)

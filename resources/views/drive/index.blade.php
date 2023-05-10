@@ -34,7 +34,7 @@
                         </thead>
                         @foreach($drives as $drive)
                             <tr>
-                                <td>{{ $drive->created_at }}</td>
+                                <td>{{ $drive->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $drive->begin_odometer }}</td>
                                 <td>{{ $drive->end_odometer }}</td>
                                 <td>{{ $drive->distance() }}</td>
