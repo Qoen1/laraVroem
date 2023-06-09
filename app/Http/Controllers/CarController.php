@@ -13,9 +13,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = auth()->user()->cars;
-
-        return view('car.index', ['cars' => $cars]);
+        abort(404);
     }
 
     /**

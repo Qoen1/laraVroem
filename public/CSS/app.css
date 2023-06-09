@@ -6,3 +6,10 @@
     border: 1px solid #c0c4c9;
     max-width: 0px;
 }
+
+.table-container{
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    min-width: 100%;
+    box-sizing: border-box;
+}

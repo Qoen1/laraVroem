@@ -22,25 +22,26 @@
                     <div class="d-flex justify-content-end">
                         <a class="btn btn-outline-primary" href="cars/create">Add Car</a>
                     </div>
-
-                    <table class="table">
-                        <thead>
-                        <th>name</th>
-                        <th>licenseplate</th>
-                        <th>total driven</th>
-                        <th>total tracked</th>
-                        <th></th>
-                        </thead>
-                        @foreach($cars as $car)
-                            <tr>
-                                <td>{{ $car->name }}</td>
-                                <td>{{ $car->license_plate }}</td>
-                                <td>{{ $car->totalDistance() }}</td>
-                                <td>{{ $car->trackedDistance() }}</td>
-                                <td><a class="btn btn-primary" href="cars/{{$car->id}}">details</a></td>
-                            </tr>
-                        @endforeach
-                    </table>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                            <th>name</th>
+                            <th>licenseplate</th>
+                            <th>total driven</th>
+                            <th>total tracked</th>
+                            <th></th>
+                            </thead>
+                            @foreach($cars as $car)
+                                <tr>
+                                    <td>{{ $car->name }}</td>
+                                    <td>{{ $car->license_plate }}</td>
+                                    <td>{{ $car->totalDistance() }}</td>
+                                    <td>{{ $car->trackedDistance() }}</td>
+                                    <td><a class="btn btn-primary" href="cars/{{$car->id}}">details</a></td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
