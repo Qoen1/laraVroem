@@ -23,25 +23,26 @@
                     <div class="d-flex justify-content-end">
                         <a class="btn btn-outline-primary" href="drives/create">Add Drive</a>
                     </div>
-
-                    <table class="table">
-                        <thead>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
                             <th>date</th>
                             <th>begin odometer</th>
                             <th>end odometer</th>
                             <th>distance</th>
                             <th>car</th>
-                        </thead>
-                        @foreach($drives as $drive)
-                            <tr>
-                                <td>{{ $drive->created_at->format('d-m-Y') }}</td>
-                                <td>{{ $drive->begin_odometer }}</td>
-                                <td>{{ $drive->end_odometer }}</td>
-                                <td>{{ $drive->distance() }}</td>
-                                <td>{{ $drive->car->name }}</td>
-                            </tr>
-                        @endforeach
-                    </table>
+                            </thead>
+                            @foreach($drives as $drive)
+                                <tr>
+                                    <td>{{ $drive->created_at->format('d-m-Y') }}</td>
+                                    <td>{{ $drive->begin_odometer }}</td>
+                                    <td>{{ $drive->end_odometer }}</td>
+                                    <td>{{ $drive->distance() }}</td>
+                                    <td>{{ $drive->car->name }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -13,6 +13,27 @@
                     <div class="devider"></div>
                     <a class="btn btn-primary" href="refuels/create">Add Refuel</a>
                 </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>Car</td>
+                            <td>Last driver</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($cars as $car) @endforeach
+                        <tr>
+                            <td>{{ $car->name }}</td>
+                            <td>{{ $car->drives()->orderBy('created_at', 'desc')->first()->user->name }}</td>
+                            <td>
+                                <a class="btn btn-secondary" href="/drives/create/{{ $car->id }}">Add Drive</a> | <a class="btn btn-secondary">Add Refuel</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
