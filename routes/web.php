@@ -22,19 +22,23 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/dashboard', function () {
-    return view('dashboard', ['cars' => auth()->user()->cars]);
+    return view('dashboard', ['cars' => auth()->user()->cars, 'drives' => DriveController::json()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('refuels', RefuelController::class)->name('index','refuels');
     Route::resource('cars', CarController::class)->name('index','cars');
 
     Route::get('/drives/create/{id}', [DriveController::class, 'create'])->name('drives.create');
     Route::get('/drives', [DriveController::class, 'index'])->name('drives');
     Route::post('/drives', [DriveController::class, 'store'])->name('drives.store');
+
+    Route::get('/refuels/create/{id}', [RefuelController::class, 'create'])->name('refuels.create');
+    Route::post('/refuels', [RefuelController::class, 'store'])->name('refuels.store');
+    Route::get('/refuels', [RefuelController::class, 'index'])->name('refuels');
+    Route::get('/refuels/{id}', [RefuelController::class, 'show'])->name('refuels.show');
 });
 
 require __DIR__.'/auth.php';

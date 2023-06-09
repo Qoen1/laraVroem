@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\Drive;
 use App\Models\Refuel;
 use Illuminate\Http\Request;
 
@@ -35,10 +36,10 @@ class RefuelController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(int $id)
     {
-        $cars = auth()->user()->cars;
-        return view('refuel.create', ['cars' => $cars]);
+        $car = Car::find($id);
+        return view('refuel.create', ['previous_endOdometer' => $car->drives()->orderByDesc('created_at')->first()->end_odometer, 'car' => $car]);
     }
 
     /**
@@ -50,28 +51,41 @@ class RefuelController extends Controller
             'car' => 'required|exists:cars,id',
             'liters' => 'required|numeric|between:0,9999.99',
             'cost' => 'required|numeric|between:0,9999.99',
+            'begin' => 'numeric|between:0,99999999999999999999',
+            'end' => 'numeric|gt:begin|between:0,99999999999999999999',
         ]);
-
+        //save in variables
         $car = Car::find($request['car']);
         $liters = $request['liters'];
         $cost = $request['cost'];
         $user = auth()->user();
+        $car = Car::find($request['car']);
+        $begin = $request['begin'];
+        $end = $request['end'];
+        $driver = auth()->user();
 
+        //create drive
+        $drive = new Drive();
+        $drive->begin_odometer = $begin;
+        $drive->end_odometer = $end;
+        $drive->car()->associate($car);
+        $drive->user()->associate($driver);
+        $drive->save();
+
+        //create refuel
         $drives = $car->drives()->where('refuel_id', '=', null)->get();
-
         $refuel = new Refuel();
         $refuel->car()->associate($car);
         $refuel->user()->associate($user);
         $refuel->liters = $liters;
         $refuel->cost = $cost;
         $refuel->save();
-
         foreach ($drives as $drive) {
             $drive->refuel()->associate($refuel);
             $drive->save();
         }
 
-        return redirect()->action([RefuelController::class, 'show'], ['refuel' => $refuel, 'drives' => $refuel->drives])->with('success', 'Refuel added successfully');
+        return redirect()->back()->with('success', 'Refuel added successfully');
     }
 
     /**
