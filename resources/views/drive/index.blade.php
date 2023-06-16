@@ -19,10 +19,7 @@
                         </div>
                         <br>
                     @endif
-
-                    <div class="d-flex justify-content-end">
-                        <a class="btn btn-outline-primary" href="drives/create">Add Drive</a>
-                    </div>
+                    
                     <div class="table-container">
                         <table class="table">
                             <thead>
