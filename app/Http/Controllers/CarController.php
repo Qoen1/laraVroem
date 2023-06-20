@@ -56,7 +56,7 @@ class CarController extends Controller
     {
         $car = Car::find($id);
         $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
-        $drives = $car->drives()->where('refuel_id', '=', null)->get();
+        $drives = $car->drives()->where('refuel_id', '=', null)->orderBy('created_at', 'desc')->get();
 
 
         return view('car.details',['refuels' => $refuels, 'car' => $car, 'drives' => $drives]);
