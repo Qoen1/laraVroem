@@ -59,7 +59,6 @@ class RefuelController extends Controller
         $liters = $request['liters'];
         $cost = $request['cost'];
         $user = auth()->user();
-        $car = Car::find($request['car']);
         $begin = $request['begin'];
         $end = $request['end'];
         $driver = auth()->user();
