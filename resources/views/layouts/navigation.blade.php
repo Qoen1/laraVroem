@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('refuels')" :active="request()->routeIs('refuels')">
                         {{ __('refuels') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('cars')" :active="request()->routeIs('cars')">
+                        {{ __('cars') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +84,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('refuels')" :active="request()->routeIs('refuels')">
                 {{ __('refuels') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('cars')" :active="request()->routeIs('cars')">
+                {{ __('cars') }}
             </x-responsive-nav-link>
         </div>
 
