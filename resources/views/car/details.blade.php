@@ -44,18 +44,18 @@
                             <th></th>
                         </thead>
                         @foreach($drives as $drive)
-                            <tr>
-                                <td>{{$drive->created_at}}</td>
-                                <td>{{$drive->distance()}}</td>
-                                <td>{{$drive->begin_odometer}}</td>
-                                <td>{{$drive->end_odometer}}</td>
-                                <td>{{$drive->user->name}}</td>
-                                <td>
-                                    <form action="/refuels/addDrive" method="post">
+                            <tr class="text-md">
+                                <td class="align-middle">{{$drive->created_at}}</td>
+                                <td class="align-middle">{{$drive->distance()}}</td>
+                                <td class="align-middle">{{$drive->begin_odometer}}</td>
+                                <td class="align-middle">{{$drive->end_odometer}}</td>
+                                <td class="align-middle">{{$drive->user->name}}</td>
+                                <td class="align-middle">
+                                    <form action="/refuels/addDrive" method="post" class="m-0">
                                         @csrf
                                         <select name="refuel_id" id="refuel_id" class="addDriveToRefuel">
                                             <option value="" autofocus>select refuel</option>
-                                            @foreach($refuels as $refuel)
+                                            @foreach($refuels->slice(0, 10) as $refuel)
                                                 <option value="{{$refuel->id}}">{{\Carbon\Carbon::createFromDate($refuel->created_at)->format('d-m-Y')}}</option>
                                             @endforeach
                                         </select>
