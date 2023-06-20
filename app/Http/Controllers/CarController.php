@@ -13,7 +13,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        abort(404);
+        return view('car.index', ['cars' => auth()->user()->cars()->orderBy('created_at', 'desc')->get()]);
     }
 
     /**

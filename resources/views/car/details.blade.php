@@ -41,6 +41,7 @@
                             <th>begin odometer</th>
                             <th>end odometer</th>
                             <th>driver</th>
+                            <th></th>
                         </thead>
                         @foreach($drives as $drive)
                             <tr>
@@ -49,7 +50,19 @@
                                 <td>{{$drive->begin_odometer}}</td>
                                 <td>{{$drive->end_odometer}}</td>
                                 <td>{{$drive->user->name}}</td>
-{{--                                <td><a class="btn btn-primary" href="/drives/{{$drive->id}}">details</a></td>--}}
+                                <td>
+                                    <form action="/refuels/addDrive" method="post">
+                                        @csrf
+                                        <select name="refuel_id" id="refuel_id" class="addDriveToRefuel">
+                                            <option value="" autofocus>select refuel</option>
+                                            @foreach($refuels as $refuel)
+                                                <option value="{{$refuel->id}}">{{\Carbon\Carbon::createFromDate($refuel->created_at)->format('d-m-Y')}}</option>
+                                            @endforeach
+                                        </select>
+                                        <input type="hidden" name="drive_id" value="{{$drive->id}}">
+
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </table>
@@ -84,3 +97,17 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+    //get all input filds with class addDriveToRefuel
+    let addDriveToRefuel = document.querySelectorAll('.addDriveToRefuel');
+    //loop over all input filds
+    addDriveToRefuel.forEach(function (input) {
+        //add event listener to input fild
+        input.addEventListener('change', function () {
+            //get the form
+            let form = this.parentElement;
+            //submit the form
+            form.submit();
+        });
+    });
+</script>

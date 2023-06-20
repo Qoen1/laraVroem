@@ -98,27 +98,35 @@ class RefuelController extends Controller
         return view('refuel.details',['refuel' => $refuel, 'drives' => $refuel->drives]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function remove(){
+        \request()->validate([
+            'refuel_id' => 'required|exists:refuels,id',
+            'drive_id' => 'required|exists:drives,id',
+        ]);
+        $refuel = Refuel::find(\request('refuel_id'));
+        $drive = Drive::find(\request('drive_id'));
+
+        if($drive->refuel_id === $refuel->id){
+            $drive->refuel()->dissociate();
+            $drive->save();
+            return redirect()->back()->with('success', 'Drive removed from refuel');
+        }
+        return redirect()->back()->with('error', 'Drive is not part of this refuel');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function add(){
+        \request()->validate([
+            'refuel_id' => 'required|exists:refuels,id',
+            'drive_id' => 'required|exists:drives,id',
+        ]);
+        $refuel = Refuel::find(\request('refuel_id'));
+        $drive = Drive::find(\request('drive_id'));
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if($drive->refuel_id === null){
+            $drive->refuel()->associate($refuel);
+            $drive->save();
+            return redirect()->back()->with('success', 'Drive added to refuel');
+        }
+        return redirect()->back()->with('error', 'Drive already has a refuel');
     }
 }
