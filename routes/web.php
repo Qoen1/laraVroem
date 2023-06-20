@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('cars', CarController::class)->name('index','cars');
+    Route::resource('cars', CarController::class)->names(['index' => 'cars', 'create' => 'cars.create', 'show' => 'cars.show']);
 
     Route::get('/drives/create/{id}', [DriveController::class, 'create'])->name('drives.create');
     Route::get('/drives', [DriveController::class, 'index'])->name('drives');
@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/refuels', [RefuelController::class, 'store'])->name('refuels.store');
     Route::get('/refuels', [RefuelController::class, 'index'])->name('refuels');
     Route::get('/refuels/{id}', [RefuelController::class, 'show'])->name('refuels.show');
+    Route::post('/refuels/addDrive', [RefuelController::class, 'add'])->name('refuels.addDrive');
+    Route::post('/refuels/removeDrive', [RefuelController::class, 'remove'])->name('refuels.removeDrive');
 });
 
 require __DIR__.'/auth.php';

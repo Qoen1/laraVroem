@@ -25,7 +25,7 @@ class DriveController extends Controller
     public function create(int $id)
     {
         $car = Car::find($id);
-        return view('drive.create',['previous_endOdometer' => $car->drives()->orderByDesc('created_at')->first()->end_odometer, 'car' => $car]);
+        return view('drive.create',['previous_endOdometer' => $car->drives()->orderByDesc('end_odometer')->first()->end_odometer, 'car' => $car]);
     }
 
     /**
