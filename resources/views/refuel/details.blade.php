@@ -32,6 +32,7 @@
                         <th>distance</th>
                         <th>car</th>
                         <th>driver</th>
+                        <th></th>
                         </thead>
                         @foreach($drives as $drive)
                             <tr>
@@ -41,6 +42,14 @@
                                 <td>{{ $drive->distance() }}</td>
                                 <td>{{ $drive->car->name }}</td>
                                 <td>{{ $drive->user->name }}</td>
+                                <td>
+                                    <form action="/refuels/removeDrive" method="post">
+                                        @csrf
+                                        <input type="hidden" name="refuel_id" value="{{ $refuel->id }}">
+                                        <input type="hidden" name="drive_id" value="{{ $drive->id }}">
+                                        <button class="btn btn-danger bg-danger" type="submit">-</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </table>

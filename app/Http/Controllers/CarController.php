@@ -13,7 +13,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        abort(404);
+        return view('car.index', ['cars' => auth()->user()->cars()->orderBy('created_at', 'desc')->get()]);
     }
 
     /**
@@ -56,7 +56,7 @@ class CarController extends Controller
     {
         $car = Car::find($id);
         $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
-        $drives = $car->drives()->where('refuel_id', '=', null)->get();
+        $drives = $car->drives()->where('refuel_id', '=', null)->orderBy('created_at', 'desc')->get();
 
 
         return view('car.details',['refuels' => $refuels, 'car' => $car, 'drives' => $drives]);
