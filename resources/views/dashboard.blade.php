@@ -9,6 +9,18 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="table-container">
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                        <br>
+                    @endif
+                    @if($errors->any())
+                        <div class="alert alert-danger ">
+                            {{ $errors->all()[0] }}
+                        </div>
+                        <br>
+                    @endif
                     <canvas id="Chart"></canvas>
                 </div>
             </div>

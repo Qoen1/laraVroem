@@ -19,6 +19,12 @@
                         </div>
                         <br>
                     @endif
+                    @if($errors->any())
+                        <div class="alert alert-danger ">
+                            {{ $errors->all()[0] }}
+                        </div>
+                        <br>
+                    @endif
                     
                     <div class="table-container">
                         <table class="table">

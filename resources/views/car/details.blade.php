@@ -6,6 +6,18 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="display-1 text-center">{{$car->name}}</h1>
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                        <br>
+                    @endif
+                    @if($errors->any())
+                        <div class="alert alert-danger ">
+                            {{ $errors->all()[0] }}
+                        </div>
+                        <br>
+                    @endif
                     <div class="d-flex flex-row justify-content-around  ">
                         <div class="flex-fill">
                             <div class="row justify-content-start">
