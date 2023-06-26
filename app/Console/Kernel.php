@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
     {
          $schedule->call(function(){
              Log::info('testing scheduling...');
+             exec('mysqldump -u '. env('DB_USERNAME').' -p'.env('DB_PASSWORD').' --databases '.env('DB_DATABASE').' > /home/fikkie/backups/'.Carbon::now()->format('d-m-Y').'.sql');
          })->everyMinute();
     }
 
