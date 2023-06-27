@@ -36,22 +36,27 @@
                         <tr>
                             <th>Car</th>
                             <th>Last driver</th>
-                            <th style="width: 20vw"></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($cars as $car) @endforeach
+                        @foreach($cars as $car)
                         <tr>
                             <td>{{ $car->name }}</td>
-                            <td>{{ $car->drives()->orderBy('created_at', 'desc')->first()->user->name }}</td>
-                            <td>
+                            @if($car->drives->count() > 0)
+                                <td>{{ $car->drives()->orderBy('created_at', 'desc')->first()->user->name }}</td>
+                            @else
+                                <td>-</td>
+                            @endif
+                            <td class="d-flex align-items-center flex-row">
                                 <a class="btn btn-primary" href="/drives/create/{{ $car->id }}">Add Drive</a>
-                                |
+                                <div class="vr m-2"></div>
                                 <a class="btn btn-secondary" href="/refuels/create/{{ $car->id }}">Add Refuel</a>
-                                |
+                                <div class="vr m-2"></div>
                                 <a class="btn btn-secondary" href="cars/{{$car->id}}">details</a>
                             </td>
                         </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
