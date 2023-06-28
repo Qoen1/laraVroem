@@ -29,6 +29,6 @@ class WeeklyBackup implements ShouldQueue
     public function handle(): void
     {
         Log::info('updating database...');
-        exec('mysqldump -u '. env('DB_USERNAME').' -p'.env('DB_PASSWORD').' --databases '.env('DB_DATABASE').' > '.env('DB_BACKUP_FOLDER', '.').'/'.Carbon::now()->format('Y-m-d H:i').'.sql');
+        exec('mysqldump -u '. env('DB_USERNAME').' -p'.env('DB_PASSWORD').' --databases '.env('DB_DATABASE').' > '.env('DB_BACKUP_FOLDER', '.').'/"'.Carbon::now()->format('Y-m-d H:i').'.sql"');
     }
 }
