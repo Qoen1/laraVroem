@@ -45,7 +45,11 @@
                                 <div class="col">€ {{round($car->averageFuelCost(), 2)}}</div>
                             </div>
                             <div class="row justify-content-start">
-                                <div class="col">Total fuel price:</div>
+                                <div class="col">Average spent per kilometer:</div>
+                                <div class="col">€ {{round($car->averageCostPerKilometer(), 2)}}</div>
+                            </div>
+                            <div class="row justify-content-start">
+                                <div class="col">Total spent on fuel:</div>
                                 <div class="col">€ {{round($car->totalFuelCost(), 2)}}</div>
                             </div>
 
