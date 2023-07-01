@@ -98,7 +98,7 @@ class RefuelController extends Controller
     {
         $refuel = Refuel::find($id);
 
-        return view('refuel.details',['refuel' => $refuel, 'drives' => $refuel->drives()->orderBy('created_at', 'desc')->get()]);
+        return view('refuel.details',['refuel' => $refuel, 'drives' => $refuel->drives()->orderBy('created_at', 'desc')->get(), 'users' => $refuel->drives->unique('user_id')->pluck('user')]);
     }
 
     public function remove(){

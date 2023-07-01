@@ -28,6 +28,8 @@ class Refuel extends Model
         return $this->hasMany(Drive::class);
     }
 
+    #endregion
+
     public function distance(){
         $drives = $this->drives;
 
@@ -37,5 +39,26 @@ class Refuel extends Model
         }
 
         return $distance;
+    }
+
+    public function userDriven(User $user){
+        $drives = $this->drives;
+
+        $distance = 0;
+        foreach ($drives as $drive){
+            if($drive->user->id === $user->id){
+                $distance += $drive->distance();
+            }
+        }
+
+        return $distance;
+    }
+
+    public function percentageDriven(User $user){
+        return $this->userDriven($user) / $this->distance() * 100;
+    }
+
+    public function amountToPay(User $user){
+        return $this->percentageDriven($user) / 100 * $this->cost;
     }
 }
