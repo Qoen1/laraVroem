@@ -141,20 +141,6 @@ class DriveController extends Controller
             ]);
         }
 
-//        $drives = $drives->groupBy(function ($record) {
-//            return Carbon::parse($record->created_at)->format('Y-m') ===;
-//        })->toArray();
-//        $keys = array_keys($drives);
-//        $values = array_values($drives);
-//        $drives = array_map(function ($key, $value) {
-//            return [
-//                'month' => $key,
-//                'value' => $value,
-//            ];
-//        }, $keys, $values);
-//        ddd((new Collection($final))->pluck('value')->toArray());
-//        ddd($final);
-
         return $final;
     }
 }

@@ -89,6 +89,13 @@
                             tension: 0.3
                         }
                     ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
             }
         );

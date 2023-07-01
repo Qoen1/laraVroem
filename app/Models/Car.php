@@ -27,6 +27,52 @@ class Car extends Model
         return $this->drives()->max('end_odometer');
     }
 
+    public function totalFuel(){
+        return $this->refuels()->sum('liters');
+    }
+
+    public function totalFuelCost(){
+        return $this->refuels()->sum('cost');
+    }
+
+    public function averageKilometersPerLiter(){
+        return $this->refuels->count() ? $this->trackedDistance() / $this->totalFuel() : 0;
+    }
+
+    public function averageFuelCost(){
+        return $this->refuels->count() ? $this->totalFuelCost() / $this->totalFuel() : 0;
+    }
+
+    public function averageCostPerKilometer(){
+        return $this->totalFuelCost() / $this->trackedDistance();
+    }
+
+    public function drivesPerUser(){
+        $users = $this->users;
+        $drives = $this->drives;
+
+        $drivesPerUser = [];
+
+        foreach ($users as $user) {
+            $drivesPerUser[$user->name] = [];
+        }
+
+        foreach ($drives as $drive) {
+            $drivesPerUser[$drive->user->name][] = $drive;
+        }
+
+        $final = [];
+
+        foreach ($users as $user) {
+            $final[] = [
+                'user' => $user,
+                'drives' => $drivesPerUser[$user->name],
+            ];
+        }
+
+        return $final;
+    }
+
     #region Eloquent Relationships
 
     public function drives(): HasMany
@@ -36,7 +82,7 @@ class Car extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(Car::class,'car_user','car_id','user_id');
+        return $this->belongsToMany(User::class,'car_user','car_id','user_id');
     }
 
     public function refuels(): HasMany
