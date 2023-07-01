@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\Refuel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class CarController extends Controller
 {
@@ -58,8 +59,14 @@ class CarController extends Controller
         $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
         $drives = $car->drives()->where('refuel_id', '=', null)->orderBy('created_at', 'desc')->get();
 
+//        ddd($this->drivesPerUserGraph($car));
 
-        return view('car.details',['refuels' => $refuels, 'car' => $car, 'drives' => $drives]);
+        return view('car.details',[
+            'refuels' => $refuels,
+            'car' => $car,
+            'drives' => $drives,
+            'graph' => $this->drivesPerUserGraph($car),
+        ]);
     }
 
     /**
@@ -84,5 +91,55 @@ class CarController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function drivesPerUserGraph(Car $car){
+        $drivesPerUser = $car->drivesPerUser();
+
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+
+        $twoYearsAgoYear = $currentYear - 2;
+        $twoYearsAgoMonth = $currentMonth;
+
+        $monthsArray = [];
+
+        while ($twoYearsAgoYear < $currentYear || ($twoYearsAgoYear == $currentYear && $twoYearsAgoMonth <= $currentMonth)) {
+            $formattedMonth = sprintf('%02d', $twoYearsAgoMonth);
+            $formattedYearMonth = $twoYearsAgoYear . '-' . $formattedMonth;
+
+            $monthsArray[] = $formattedYearMonth;
+
+            $twoYearsAgoMonth++;
+            if ($twoYearsAgoMonth > 12) {
+                $twoYearsAgoMonth = 1;
+                $twoYearsAgoYear++;
+            }
+        }
+
+        foreach ($monthsArray as $month) {
+            $record = [
+                'month' => $month,
+                'users' => [],
+            ];
+            foreach ($drivesPerUser as $user) {
+                $distance = 0;
+
+                foreach ($user['drives'] as $drive) {
+                    if($drive->created_at->format('Y-m') == $month){
+                        $distance += $drive->distance();
+                    }
+                }
+
+                $record['users'][] = [
+                    'id' => $user['user']->id,
+                    'name' => $user['user']->name,
+                    'kilometers' => $distance,
+                ];
+            }
+            $final[] = $record;
+        }
+
+        return $final;
     }
 }

@@ -18,24 +18,43 @@
                         </div>
                         <br>
                     @endif
-                    <div class="d-flex flex-row justify-content-around  ">
+                    <div class="d-flex flex-row justify-content-around flex-wrap">
                         <div class="flex-fill">
                             <div class="row justify-content-start">
                                 <div class="col">license plate:</div>
                                 <div class="col">{{$car->license_plate}}</div>
                             </div>
                             <div class="row justify-content-start">
-                                <div class="col">total driven kilometers:</div>
+                                <div class="col">current odometer value:</div>
                                 <div class="col">{{$car->totalDistance()}}</div>
                             </div>
                             <div class="row justify-content-start">
                                 <div class="col">total tracked kilometers:</div>
-                                <div class="col">{{$car->trackedDistance()}}</div>
+                                <div class="col">{{$car->trackedDistance()}} km</div>
                             </div>
-                        </div>
-                        <div class="devider flex-fill"></div>
+                            <div class="row justify-content-start">
+                                <div class="col">total fuel consumption:</div>
+                                <div class="col">{{round($car->totalFuel(), 2)}} L</div>
+                            </div>
+                            <div class="row justify-content-start">
+                                <div class="col">Average fuel consumption:</div>
+                                <div class="col">{{round($car->averageKilometersPerLiter(), 2)}} km / L</div>
+                            </div>
+                            <div class="row justify-content-start">
+                                <div class="col">Average fuel price:</div>
+                                <div class="col">€ {{round($car->averageFuelCost(), 2)}}</div>
+                            </div>
+                            <div class="row justify-content-start">
+                                <div class="col">Total fuel price:</div>
+                                <div class="col">€ {{round($car->totalFuelCost(), 2)}}</div>
+                            </div>
 
-                        <div class="flex-fill d-flex justify-content-center">NOOTNOOT</div>
+                        </div>
+                        <div class="devider"></div>
+
+                        <div class="flex-fill d-flex justify-content-center">
+                            <canvas id="Chart" class=" embed-responsive embed-responsive-4by3"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,4 +141,67 @@
             form.submit();
         });
     });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module">
+    (async function() {
+
+        let badVibes = {{ \Illuminate\Support\Js::from($graph) }};
+        const data = badVibes.map(row => {
+            let ding = {
+                month: row.month,
+                users: [],
+            };
+            for(let i=0;i<row.users.length;i++){
+                let user = row.users[i];
+                ding.users.push({
+                    name: user.name,
+                    kilometers: user.kilometers,
+                });
+            }
+            return ding;
+        });
+
+        console.log(data);
+
+        let datasets = [];
+
+        for (let i = 0; i < data[0].users.length; i++) {
+            let user = data[0].users[i];
+            datasets.push({
+                label: user.name,
+                data: data.map(row => row.users[i].kilometers),
+                tension: 0.3
+            });
+        }
+
+        new Chart(
+            document.getElementById('Chart'),
+            {
+                type: 'line',
+                data: {
+                    labels: data.map(row => row.month),
+                    datasets: datasets,
+
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            }
+        );
+    })();
+
+    function total_kilometers(drives){
+        let total_kilometers = 0;
+        for(let i=0;i<drives.length;i++){
+            let drive = drives[i];
+            total_kilometers += drive.end_odometer - drive.begin_odometer;
+        }
+        return total_kilometers;
+    }
 </script>
