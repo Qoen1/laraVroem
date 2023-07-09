@@ -44,7 +44,7 @@ class Car extends Model
     }
 
     public function averageCostPerKilometer(){
-        return $this->totalFuelCost() / $this->trackedDistance();
+        return $this->refuels->count() ? $this->totalFuelCost() / $this->trackedDistance() : 0;
     }
 
     public function drivesPerUser(){
