@@ -9,26 +9,17 @@ use Illuminate\Support\Collection;
 
 class CarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('car.index', ['cars' => auth()->user()->cars()->orderBy('created_at', 'desc')->get()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('car.create');
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -50,9 +41,6 @@ class CarController extends Controller
         return redirect()->route('cars')->with('success', 'Car created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $car = Car::find($id);
@@ -69,28 +57,36 @@ class CarController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        //TODO: delete car
+    }
+
+    public function  createInvite(){
+        //TODO:create invite
+    }
+
+    public function  acceptInvite(){
+        //TODO:accept invite
+    }
+
+    public function  declineInvite(){
+        //TODO:remove invite
+    }
+
+    public function removeUser(){
+        //TODO: remove user from car and figure out what to do with his drives and refuels. note: the user cannot delete himself
+
     }
 
     private function drivesPerUserGraph(Car $car){

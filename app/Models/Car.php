@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Car extends Model
 {
+    //TODO: add car admin who has CRUD access to all data in that car (change refuels and drives, and invite/ban users)
     use HasFactory;
 
     public function trackedDistance(){

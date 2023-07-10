@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="/CSS/app.css">
-
+{{--TODO: add list of current members--}}
+{{--TODO: add list of pending invites--}}
+{{--TODO: add ability to revoke and create invite--}}
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
