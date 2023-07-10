@@ -45,7 +45,7 @@ class CarController extends Controller
         $car->license_plate = $license_plate;
         $car->save();
 
-        $user->cars()->attach($car);
+        $user->cars()->attach($car, ['activated_at' => now()]);
 
         return redirect()->route('cars')->with('success', 'Car created successfully.');
     }
