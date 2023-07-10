@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('license_plate');
+            $table->dateTime('activated_at');
             $table->timestamps();
         });
     }
