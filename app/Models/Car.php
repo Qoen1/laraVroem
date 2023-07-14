@@ -35,8 +35,22 @@ class Car extends Model
         return $this->refuels()->sum('cost');
     }
 
+    public function trackedDistanceInValidRefuel(){
+        $drives = $this->drives()->with('refuel')->get();
+
+        $distance = 0;
+
+        foreach ($drives as $drive) {
+            if($drive->refuel === null || $drive->refuel->liters > 0){
+                $distance += $drive->distance();
+            }
+        }
+
+        return $distance;
+    }
+
     public function averageKilometersPerLiter(){
-        return $this->refuels->count() ? $this->trackedDistance() / $this->totalFuel() : 0;
+        return $this->refuels->count() ? $this->trackedDistanceInValidRefuel() / $this->totalFuel() : 0;
     }
 
     public function averageFuelCost(){
@@ -44,7 +58,7 @@ class Car extends Model
     }
 
     public function averageCostPerKilometer(){
-        return $this->refuels->count() ? $this->totalFuelCost() / $this->trackedDistance() : 0;
+        return $this->refuels->count() ? $this->totalFuelCost() / $this->trackedDistanceInValidRefuel() : 0;
     }
 
     public function drivesPerUser(){
