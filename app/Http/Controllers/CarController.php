@@ -84,7 +84,6 @@ class CarController extends Controller
     }
 
     public function  createInvite(){
-//        ddd(\request()->all());
         \request()->validate([
             'invitee' => 'required|email|exists:users,email',
             'car_id' => 'required|exists:cars,id',
@@ -96,14 +95,28 @@ class CarController extends Controller
         $user = User::where('email', \request('invitee'))->first();
         $car->users()->attach($user, ['activated_at' => null]);
         $car->save();
+
+        return redirect('dashboard')->with('success', 'Invite sent successfully.');
     }
 
     public function  acceptInvite(){
-        //TODO:accept invite
+        \request()->validate([
+            'car_id' => 'required|exists:cars,id',
+        ]);
+        $car = Car::find(\request('car_id'));
+        $user = auth()->user();
+
+        if($user->cars()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot decline an invite for a car you are already a member of.');
+        }else{
+            $user->carInvites()->updateExistingPivot($car, ['activated_at' => now()]);
+            $user->save();
+        }
+        return redirect('dashboard')->with('success', 'Invite accepted successfully.');
+
     }
 
     public function  declineInvite(){
-        //TODO:remove invite
         \request()->validate([
             'car_id' => 'required|exists:cars,id',
         ]);
@@ -115,7 +128,7 @@ class CarController extends Controller
             $user->carInvites()->detach($car);
             $user->save();
         }
-        return redirect()->route('dashboard')->with('success', 'Invite declined successfully.');
+        return redirect('dashboard')->with('success', 'Invite declined successfully.');
     }
 
     public function removeUser(){

@@ -32,11 +32,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="table-container">
-                    <table>
+                    <table class="w-100">
                         <thead>
                         <tr>
                             <th>Car</th>
-                            <th>Invited by</th>
+                            <th>number plate</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -44,18 +44,18 @@
                         @foreach($invites as $invite)
                             <tr>
                                 <td>{{ $invite->name }}</td>
-                                <td>{{ $invite->numberplate }}</td>
-                                <td>
+                                <td>{{ $invite->license_plate }}</td>
+                                <td class="d-flex align-items-center flex-row">
                                     <form method="post" action="cars/acceptInvite">
                                         @csrf
                                         <input type="hidden" name="car_id" value="{{ $invite->id }}">
-                                        <button class="btn btn-primary" type="submit">accept</button>
+                                        <button class="btn border-primary" type="submit">accept</button>
                                     </form>
-                                    <div class="vr"></div>
+                                    <div class="vr m-2"></div>
                                     <form method="post" action="cars/declineInvite">
                                         @csrf
                                         <input type="hidden" name="car_id" value="{{ $invite->id }}">
-                                        <button class="btn btn-danger" type="submit">decline</button>
+                                        <button class="btn border-danger" type="submit">decline</button>
                                     </form>
                                 </td>
                             </tr>
