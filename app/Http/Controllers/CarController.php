@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\Refuel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\View\View;
 
 class CarController extends Controller
 {
@@ -72,8 +74,27 @@ class CarController extends Controller
         //TODO: delete car
     }
 
+    public function share(int $id){
+//        ddd($id);
+        validator(\request()->route()->parameters())->validate([
+            'id' => 'required|exists:cars,id',
+        ]);
+        return view('car.share', ['car' => $id]);
+    }
+
     public function  createInvite(){
+//        ddd(\request()->all());
+        \request()->validate([
+            'invitee' => 'required|email|exists:users,email',
+            'car_id' => 'required|exists:cars,id',
+        ]);
+        //TODO: check if the user is not yet assigned to the car
+
         //TODO:create invite
+        $car = Car::find(\request('car_id'));
+        $user = User::where('email', \request('invitee'))->first();
+        $car->users()->attach($user, ['activated_at' => null]);
+        $car->save();
     }
 
     public function  acceptInvite(){

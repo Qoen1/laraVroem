@@ -27,6 +27,37 @@
         </div>
     </div>
 
+    @if($invites->count() > 0)
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Car</th>
+                            <th>Invited by</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($invites as $invite)
+                            <tr>
+                                <td>{{ $invite->name }}</td>
+                                <td>{{ $invite->numberplate }}</td>
+                                <td><a class="btn btn-primary" href="invites/{{$invite->id}}">accept</a>
+                                    <div class="vr"></div>
+                                    <a class="btn btn-danger" href="invites/{{$invite->id}}">decline</a></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
