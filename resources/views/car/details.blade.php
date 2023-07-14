@@ -21,7 +21,7 @@
                         <br>
                     @endif
                     <div class="d-flex flex-row justify-content-around flex-wrap">
-                        <div class="flex-fill">
+                        <div class="flex-fill d-flex flex-column">
                             <div class="row justify-content-start">
                                 <div class="col">license plate:</div>
                                 <div class="col">{{$car->license_plate}}</div>
@@ -54,7 +54,9 @@
                                 <div class="col">Total spent on fuel:</div>
                                 <div class="col">€ {{round($car->totalFuelCost(), 2)}}</div>
                             </div>
-
+                            <div class="position-relative flex-fill">
+                                <a href="/cars/{{$car->id}}/share" class="btn btn-primary position-absolute top-50 start-50 translate-middle">share</a>
+                            </div>
                         </div>
                         <div class="devider"></div>
 
