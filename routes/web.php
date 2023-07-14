@@ -37,6 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('cars', CarController::class)->names(['index' => 'cars', 'create' => 'cars.create', 'show' => 'cars.show']);
     Route::get('/cars/{id}/share', [CarController::class, 'share'])->name('cars.share');
     Route::post('/cars/share', [CarController::class, 'createInvite'])->name('cars.createInvite');
+    Route::post('/cars/acceptInvite', [CarController::class, 'acceptInvite'])->name('cars.acceptInvite');
+    Route::post('/cars/declineInvite', [CarController::class, 'declineInvite'])->name('cars.declineInvite');
 
     Route::get('/drives/create/{id}', [DriveController::class, 'create'])->name('drives.create');
     Route::get('/drives', [DriveController::class, 'index'])->name('drives');

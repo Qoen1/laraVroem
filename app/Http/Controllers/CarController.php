@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\CarUser;
 use App\Models\Refuel;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -103,6 +104,18 @@ class CarController extends Controller
 
     public function  declineInvite(){
         //TODO:remove invite
+        \request()->validate([
+            'car_id' => 'required|exists:cars,id',
+        ]);
+        $car = Car::find(\request('car_id'));
+        $user = auth()->user();
+        if($user->cars()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot decline an invite for a car you are already a member of.');
+        }else{
+            $user->carInvites()->detach($car);
+            $user->save();
+        }
+        return redirect()->route('dashboard')->with('success', 'Invite declined successfully.');
     }
 
     public function removeUser(){

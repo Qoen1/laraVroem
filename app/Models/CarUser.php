@@ -9,5 +9,5 @@ class CarUser extends Model
 {
     use HasFactory;
 
-    publi
+
 }

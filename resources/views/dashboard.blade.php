@@ -45,9 +45,19 @@
                             <tr>
                                 <td>{{ $invite->name }}</td>
                                 <td>{{ $invite->numberplate }}</td>
-                                <td><a class="btn btn-primary" href="invites/{{$invite->id}}">accept</a>
+                                <td>
+                                    <form method="post" action="cars/acceptInvite">
+                                        @csrf
+                                        <input type="hidden" name="car_id" value="{{ $invite->id }}">
+                                        <button class="btn btn-primary" type="submit">accept</button>
+                                    </form>
                                     <div class="vr"></div>
-                                    <a class="btn btn-danger" href="invites/{{$invite->id}}">decline</a></td>
+                                    <form method="post" action="cars/declineInvite">
+                                        @csrf
+                                        <input type="hidden" name="car_id" value="{{ $invite->id }}">
+                                        <button class="btn btn-danger" type="submit">decline</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
