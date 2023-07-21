@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('cars', CarController::class)->names(['index' => 'cars', 'create' => 'cars.create', 'show' => 'cars.show']);
+    Route::resource('cars', CarController::class)->names(['index' => 'cars.index', 'create' => 'cars.create', 'show' => 'cars.show']);
     Route::get('/cars/{id}/share', [CarController::class, 'share'])->name('cars.share');
     Route::post('/cars/share', [CarController::class, 'createInvite'])->name('cars.createInvite');
     Route::post('/cars/acceptInvite', [CarController::class, 'acceptInvite'])->name('cars.acceptInvite');
@@ -42,12 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/cars/{id}/manage', [CarController::class, 'manage'])->name('cars.manage');
 
     Route::get('/drives/create/{id}', [DriveController::class, 'create'])->name('drives.create');
-    Route::get('/drives', [DriveController::class, 'index'])->name('drives');
+    Route::get('/drives', [DriveController::class, 'index'])->name('drives.index');
     Route::post('/drives', [DriveController::class, 'store'])->name('drives.store');
 
     Route::get('/refuels/create/{id}', [RefuelController::class, 'create'])->name('refuels.create');
     Route::post('/refuels', [RefuelController::class, 'store'])->name('refuels.store');
-    Route::get('/refuels', [RefuelController::class, 'index'])->name('refuels');
+    Route::get('/refuels', [RefuelController::class, 'index'])->name('refuels.index');
     Route::get('/refuels/{id}', [RefuelController::class, 'show'])->name('refuels.show');
     Route::post('/refuels/addDrive', [RefuelController::class, 'add'])->name('refuels.addDrive');
     Route::post('/refuels/removeDrive', [RefuelController::class, 'remove'])->name('refuels.removeDrive');

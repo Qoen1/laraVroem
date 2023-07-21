@@ -17,8 +17,6 @@
                         <a class="btn btn-primary" href="/drives/create/{{ $car->id }}">Add Drive</a>
                         <div class="vr m-2"></div>
                         <a class="btn btn-secondary" href="/refuels/create/{{ $car->id }}">Add Refuel</a>
-                        <div class="vr m-2"></div>
-                        <a class="btn btn-secondary" href="cars/{{$car->id}}">details</a>
                     </div>
                     @if(session()->has('success'))
                         <div class="alert alert-success">

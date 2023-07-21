@@ -15,13 +15,13 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('drives')" :active="request()->routeIs('drives.*')">
+                    <x-nav-link :href="route('drives.index')" :active="request()->routeIs('drives.*')">
                         {{ __('drives') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('refuels')" :active="request()->routeIs('refuels.*')">
+                    <x-nav-link :href="route('refuels.index')" :active="request()->routeIs('refuels.*')">
                         {{ __('refuels') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('cars')" :active="request()->routeIs('cars.*')">
+                    <x-nav-link :href="route('cars.index')" :active="request()->routeIs('cars.*')">
                         {{ __('cars') }}
                     </x-nav-link>
                 </div>
@@ -79,13 +79,13 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('drives')" :active="request()->routeIs('drives.*')">
+            <x-responsive-nav-link :href="route('drives.index')" :active="request()->routeIs('drives.*')">
                 {{ __('drives') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('refuels')" :active="request()->routeIs('refuels.*')">
+            <x-responsive-nav-link :href="route('refuels.index')" :active="request()->routeIs('refuels.*')">
                 {{ __('refuels') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('cars')" :active="request()->routeIs('cars.*')">
+            <x-responsive-nav-link :href="route('cars.index')" :active="request()->routeIs('cars.*')">
                 {{ __('cars') }}
             </x-responsive-nav-link>
         </div>
