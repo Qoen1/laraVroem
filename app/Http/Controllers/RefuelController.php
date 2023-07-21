@@ -33,6 +33,12 @@ class RefuelController extends Controller
         return view('refuel.index', ['refuels' => $refuels]);
     }
 
+    public function manage(int $id){
+        $refuel = Refuel::find($id);
+
+        return view('refuel.manage',['refuel' => $refuel, 'drives' => $refuel->drives()->orderBy('created_at', 'desc')->get(), 'users' => $refuel->drives->unique('user_id')->pluck('user')]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

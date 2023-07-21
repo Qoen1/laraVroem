@@ -99,6 +99,22 @@ class CarController extends Controller
         return redirect('dashboard')->with('success', 'Invite sent successfully.');
     }
 
+    public function manage(int $id){
+        $car = Car::find($id);
+        $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
+        $drives = $car->drives()->where('refuel_id', '=', null)->orderBy('created_at', 'desc')->get();
+
+//        ddd($this->drivesPerUserGraph($car));
+
+        return view('car.manage',[
+            'refuels' => $refuels,
+            'car' => $car,
+            'drives' => $drives,
+            'graph' => $this->drivesPerUserGraph($car),
+            'users' => $car->users,
+        ]);
+    }
+
     public function  acceptInvite(){
         \request()->validate([
             'car_id' => 'required|exists:cars,id',

@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cars/share', [CarController::class, 'createInvite'])->name('cars.createInvite');
     Route::post('/cars/acceptInvite', [CarController::class, 'acceptInvite'])->name('cars.acceptInvite');
     Route::post('/cars/declineInvite', [CarController::class, 'declineInvite'])->name('cars.declineInvite');
+    Route::get('/cars/{id}/manage', [CarController::class, 'manage'])->name('cars.manage');
 
     Route::get('/drives/create/{id}', [DriveController::class, 'create'])->name('drives.create');
     Route::get('/drives', [DriveController::class, 'index'])->name('drives');
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/refuels/{id}', [RefuelController::class, 'show'])->name('refuels.show');
     Route::post('/refuels/addDrive', [RefuelController::class, 'add'])->name('refuels.addDrive');
     Route::post('/refuels/removeDrive', [RefuelController::class, 'remove'])->name('refuels.removeDrive');
+    Route::get('/refuels/{id}/manage', [RefuelController::class, 'manage'])->name('refuels.manage');
 });
 
 require __DIR__.'/auth.php';
