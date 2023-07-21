@@ -71,36 +71,36 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
+
+                <table class="table bigBoiTable">
+                    <thead>
+                    <tr>
+                        <th>Car</th>
+                        <th>Last driver</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($cars as $car)
                         <tr>
-                            <th>Car</th>
-                            <th>Last driver</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($cars as $car)
-                        <tr>
-                            <td>{{ $car->name }}</td>
+                            <td label="Car">{{ $car->name }}</td>
                             @if($car->drives->count() > 0)
-                                <td>{{ $car->drives()->orderBy('created_at', 'desc')->first()->user->name }}</td>
+                                <td label="Last driver">{{ $car->drives()->orderBy('created_at', 'desc')->first()->user->name }}</td>
                             @else
-                                <td>-</td>
+                                <td label="Last driver">-</td>
                             @endif
-                            <td class="d-flex align-items-center flex-row">
-                                <a class="btn btn-primary" href="/drives/create/{{ $car->id }}">Add Drive</a>
-                                <div class="vr m-2"></div>
-                                <a class="btn btn-secondary" href="/refuels/create/{{ $car->id }}">Add Refuel</a>
-                                <div class="vr m-2"></div>
-                                <a class="btn btn-secondary" href="cars/{{$car->id}}">details</a>
+                            <td>
+                                <div class="d-flex align-items-center flex-row flex-wrap"><a class="btn btn-primary" href="/drives/create/{{ $car->id }}">Add Drive</a>
+                                    <div class="vr m-2"></div>
+                                    <a class="btn btn-secondary" href="/refuels/create/{{ $car->id }}">Add Refuel</a>
+                                    <div class="vr m-2"></div>
+                                    <a class="btn btn-secondary" href="cars/{{$car->id}}">details</a>
+                                </div>
                             </td>
                         </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

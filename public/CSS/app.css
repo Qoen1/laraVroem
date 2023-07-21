@@ -21,9 +21,20 @@
 @media screen and (max-width: 600px) {
     table.bigBoiTable thead {
         display: none;
-    }  table.bigBoiTable td {
-           display: flex;
-       }
+    }
+
+    table.bigBoiTable td {
+        display: flex;
+        border-color: #c0c4c9;
+    }
+
+    table.bigBoiTable tr {
+        border-bottom: 1px solid #6e6e6e;
+    }
+
+    table.bigBoiTable tr:last-child {
+        border-bottom: none;
+    }
 
     table.bigBoiTable td::before {
         content: attr(label);
