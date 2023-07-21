@@ -19,13 +19,13 @@
 }
 
 @media screen and (max-width: 600px) {
-    table thead {
+    table.bigBoiTable thead {
         display: none;
-    }  table td {
+    }  table.bigBoiTable td {
            display: flex;
        }
 
-    table td::before {
+    table.bigBoiTable td::before {
         content: attr(label);
         font-weight: bold;
         width: 120px;

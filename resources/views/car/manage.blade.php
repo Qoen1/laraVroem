@@ -67,7 +67,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h2 class="text-center display-6">current set</h2>
-                    <table class="table">
+                    <table class="table bigBoiTable">
                         <thead>
                             <th>created at</th>
                             <th>distance</th>
@@ -109,7 +109,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table class="table">
+                    <table class="table bigBoiTable">
                         <thead>
                         <th>created at</th>
                         <th>distance</th>
