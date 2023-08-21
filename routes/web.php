@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('cars', CarController::class)->names(['index' => 'cars', 'create' => 'cars.create', 'show' => 'cars.show']);
+    Route::resource('cars', CarController::class)->names(['index' => 'cars', 'create' => 'cars.create', 'show' => 'cars.show'])->middleware('owns.car');
 
     Route::get('/drives/create/{id}', [DriveController::class, 'create'])->name('drives.create');
     Route::get('/drives', [DriveController::class, 'index'])->name('drives');
