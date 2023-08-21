@@ -59,8 +59,8 @@ class RefuelController extends Controller
     {
         $request->validate([
             'car' => 'required|exists:cars,id',
-            'liters' => 'required|numeric|between:0,9999.99',
-            'cost' => 'required|numeric|between:0,9999.99',
+            'liters' => 'required|numeric|gt:0|between:0,9999.99',
+            'cost' => 'required|numeric|gt:0|between:0,9999.99',
             'begin' => 'numeric|between:0,99999999999999999999',
             'end' => 'numeric|gt:begin|between:0,99999999999999999999',
         ]);
