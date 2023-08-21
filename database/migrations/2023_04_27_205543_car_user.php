@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('car_user', function (Blueprint $table) {
             $table->foreignId('user_id');
             $table->foreignId('car_id');
-            $table->dateTime('activated_at')->nullable();
+
         });
     }
 
