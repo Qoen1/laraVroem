@@ -47,7 +47,7 @@ class DriveController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'car' => ['required|exists:cars,id', Rule::in(request()->user()->cars()->pluck('id'))],
+            'car' => ['required', 'exists:cars,id', Rule::in(request()->user()->cars()->pluck('id'))],
             'begin' => 'numeric|between:0,99999999999999999999',
             'end' => 'numeric|gt:begin|between:0,99999999999999999999',
         ]);
