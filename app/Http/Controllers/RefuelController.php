@@ -6,6 +6,7 @@ use App\Models\Car;
 use App\Models\Drive;
 use App\Models\Refuel;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RefuelController extends Controller
 {
@@ -36,9 +37,15 @@ class RefuelController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(int $id)
+    public function create(int $carId)
     {
-        $car = Car::find($id);
+        if(Car::where('id', '=', $carId)->count() === 0){
+            abort(404);
+        }else if(\request()->user()->cars()->where('id', '=', $carId)->count() === 0){
+            abort(403);
+        }
+
+        $car = Car::find($carId);
         $previous_endOdometer = 0;
         if($car->drives->count() > 0){
             $previous_endOdometer = $car->drives()->orderByDesc('end_odometer')->first()->end_odometer;
@@ -52,7 +59,7 @@ class RefuelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'car' => 'required|exists:cars,id',
+            'car' => ['required|exists:cars,id', Rule::in(\request()->user()->cars()->pluck('id'))],
             'liters' => 'required|numeric|gt:0|between:0,9999.99',
             'cost' => 'required|numeric|gt:0|between:0,9999.99',
             'begin' => 'numeric|between:0,99999999999999999999',

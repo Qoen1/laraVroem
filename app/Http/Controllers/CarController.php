@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\Refuel;
+use App\Rules\Ownership;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class CarController extends Controller
 {
@@ -53,13 +55,17 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $carId)
     {
-        $car = Car::find($id);
+        if(Car::where('id', '=', $carId)->count() === 0){
+            abort(404);
+        }else if(\request()->user()->cars()->where('id', '=', $carId)->count() === 0){
+            abort(403);
+        }
+
+        $car = Car::find($carId);
         $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
         $drives = $car->drives()->where('refuel_id', '=', null)->orderBy('created_at', 'desc')->get();
-
-//        ddd($this->drivesPerUserGraph($car));
 
         return view('car.details',[
             'refuels' => $refuels,
