@@ -65,7 +65,7 @@ class RefuelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'car' => ['required|exists:cars,id', Rule::in(\request()->user()->cars()->pluck('id'))],
+            'car' => ['required', 'exists:cars,id', Rule::in(\request()->user()->cars()->pluck('id'))],
             'liters' => 'required|numeric|gt:0|between:0,9999.99',
             'cost' => 'required|numeric|gt:0|between:0,9999.99',
             'begin' => 'numeric|between:0,99999999999999999999',

@@ -42,12 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/cars/{id}/manage', [CarController::class, 'manage'])->name('cars.manage');
 
     Route::get('/drives/create/{car}', [DriveController::class, 'create'])->name('drives.create');
-    Route::get('/drives', [DriveController::class, 'index'])->name('drives');
+    Route::get('/drives', [DriveController::class, 'index'])->name('drives.index');
     Route::post('/drives', [DriveController::class, 'store'])->name('drives.store');
 
     Route::get('/refuels/create/{car}', [RefuelController::class, 'create'])->name('refuels.create');
     Route::post('/refuels', [RefuelController::class, 'store'])->name('refuels.store');
-    Route::get('/refuels', [RefuelController::class, 'index'])->name('refuels');
+    Route::get('/refuels', [RefuelController::class, 'index'])->name('refuels.index');
     Route::get('/refuels/{refuel}', [RefuelController::class, 'show'])->name('refuels.show');
     Route::post('/refuels/addDrive', [RefuelController::class, 'add'])->name('refuels.addDrive');
     Route::post('/refuels/removeDrive', [RefuelController::class, 'remove'])->name('refuels.removeDrive');

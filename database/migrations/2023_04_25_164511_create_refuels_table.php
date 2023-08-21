@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('refuels', function (Blueprint $table) {
             $table->id();
-            $table->integer('liters');
+            $table->decimal('liters');
             $table->decimal('cost');
             $table->foreignId('user_id');
             $table->foreignId('car_id');
