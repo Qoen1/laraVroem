@@ -35,7 +35,13 @@ class RefuelController extends Controller
     }
 
     public function manage(int $id){
+        if(!Refuel::where('id', $id)->exists()) {
+            abort(404);
+        }
         $refuel = Refuel::find($id);
+        if($refuel->car->users->where('id', auth()->user()->id)->count() === 0){
+            abort(403);
+        }
 
         return view('refuel.manage',['refuel' => $refuel, 'drives' => $refuel->drives()->orderBy('created_at', 'desc')->get(), 'users' => $refuel->drives->unique('user_id')->pluck('user')]);
     }
@@ -109,7 +115,13 @@ class RefuelController extends Controller
      */
     public function show(string $id)
     {
+        if(!Refuel::where('id', $id)->exists()) {
+            abort(404);
+        }
         $refuel = Refuel::find($id);
+        if($refuel->car->users->where('id', auth()->user()->id)->count() === 0){
+            abort(403);
+        }
 
         return view('refuel.details',['refuel' => $refuel, 'drives' => $refuel->drives()->orderBy('created_at', 'desc')->get(), 'users' => $refuel->drives->unique('user_id')->pluck('user')]);
     }
@@ -121,6 +133,10 @@ class RefuelController extends Controller
         ]);
         $refuel = Refuel::find(\request('refuel_id'));
         $drive = Drive::find(\request('drive_id'));
+
+        if($refuel->car->users->where('id', auth()->user()->id)->count() === 0){
+            abort(403);
+        }
 
         if($drive->refuel_id === $refuel->id){
             $drive->refuel()->dissociate();
@@ -137,6 +153,13 @@ class RefuelController extends Controller
         ]);
         $refuel = Refuel::find(\request('refuel_id'));
         $drive = Drive::find(\request('drive_id'));
+
+        if(
+            $refuel->car->users->where('id', auth()->user()->id)->count() === 0 ||
+            $drive->car->users->where('id', auth()->user()->id)->count() === 0
+        ){
+            abort(403);
+        }
 
         if($drive->refuel_id === null){
             $drive->refuel()->associate($refuel);
