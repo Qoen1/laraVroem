@@ -67,8 +67,8 @@
                         </div>
                         <div class="devider"></div>
 
-                        <div class="flex-fill d-flex justify-content-center">
-                            <canvas id="Chart" class=" embed-responsive embed-responsive-4by3"></canvas>
+                        <div style="height: 35vh; min-width: 70%;">
+                            <canvas id="Chart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -195,7 +195,8 @@
                         y: {
                             beginAtZero: true
                         }
-                    }
+                    },
+                    maintainAspectRatio: false
                 }
             }
         );

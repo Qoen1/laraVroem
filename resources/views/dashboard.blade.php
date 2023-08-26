@@ -21,7 +21,9 @@
                         </div>
                         <br>
                     @endif
-                    <canvas id="Chart"></canvas>
+                    <div style="min-height: 35vh">
+                        <canvas id="Chart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,7 +119,7 @@
             kilometers: total_kilometers(row.value),
         }));
 
-        new Chart(
+        let chart = new Chart(
             document.getElementById('Chart'),
             {
                 type: 'line',
@@ -136,7 +138,8 @@
                         y: {
                             beginAtZero: true
                         }
-                    }
+                    },
+                    maintainAspectRatio: false
                 }
             }
         );

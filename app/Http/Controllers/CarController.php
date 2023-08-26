@@ -149,6 +149,11 @@ class CarController extends Controller
         $car = Car::find(\request('car_id'));
         $user = auth()->user();
 
+        //check if there is an invitation
+        if(!$user->carInvites()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot accept an invite for a car you are not invited to.');
+        }
+
         if($user->cars()->where('id', $car->id)->exists()){
             return redirect()->route('cars')->with('error', 'You cannot decline an invite for a car you are already a member of.');
         }else{
@@ -165,6 +170,11 @@ class CarController extends Controller
         ]);
         $car = Car::find(\request('car_id'));
         $user = auth()->user();
+
+        //check if there is an invitation
+        if(!$user->carInvites()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot accept an invite for a car you are not invited to.');
+        }
         if($user->cars()->where('id', $car->id)->exists()){
             return redirect()->route('cars')->with('error', 'You cannot decline an invite for a car you are already a member of.');
         }else{
