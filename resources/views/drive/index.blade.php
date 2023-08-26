@@ -24,8 +24,7 @@
                         </div>
                         <br>
                     @endif
-                    
-                    <div class="table-container">
+
                         <table class="table bigBoiTable">
                             <thead>
                             <th>date</th>
@@ -44,7 +43,6 @@
                                 </tr>
                             @endforeach
                         </table>
-                    </div>
                 </div>
             </div>
         </div>

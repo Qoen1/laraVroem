@@ -84,7 +84,7 @@
                                 <td label="begin odometer" class="align-middle">{{$drive->begin_odometer}}</td>
                                 <td label="end odometer" class="align-middle">{{$drive->end_odometer}}</td>
                                 <td label="driver" class="align-middle">{{$drive->user->name}}</td>
-                                <td label="" class="align-middle">
+                                <td label="add to" class="align-middle">
                                     <form action="/refuels/addDrive" method="post" class="m-0">
                                         @csrf
                                         <select name="refuel_id" id="refuel_id" class="addDriveToRefuel">
