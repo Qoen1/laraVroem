@@ -102,12 +102,17 @@ class CarController extends Controller
         //TODO: delete car
     }
 
-    public function share(int $id){
-//        ddd($id);
+    public function share(int $carId){
+        if(Car::where('id', '=', $carId)->count() === 0){
+            abort(404);
+        }else if(\request()->user()->cars()->where('id', '=', $carId)->count() === 0){
+            abort(403);
+        }
+
         validator(\request()->route()->parameters())->validate([
             'id' => 'required|exists:cars,id',
         ]);
-        return view('car.share', ['car' => $id]);
+        return view('car.share', ['car' => $carId]);
     }
 
     public function  createInvite(){
@@ -115,23 +120,40 @@ class CarController extends Controller
             'invitee' => 'required|email|exists:users,email',
             'car_id' => 'required|exists:cars,id',
         ]);
-        //TODO: check if the user is not yet assigned to the car
 
-        //TODO:create invite
         $car = Car::find(\request('car_id'));
-        $user = User::where('email', \request('invitee'))->first();
-        $car->users()->attach($user, ['activated_at' => null]);
+        $user = auth()->user();
+        $invitee = User::all()->where('email', \request('invitee'))->first();
+
+        if ($user->cars()->where('id', '=', $car->id)->count() === 0) {
+            abort(403);
+        }
+        if ($invitee->id === $user->id) {
+            return redirect()->back()->with('error', 'You cannot invite yourself.');
+        }
+        if ($invitee->cars()->where('id', '=', $car->id)->count() > 0) {
+            return redirect()->back()->with('error', 'You cannot invite a user that is already a member of the car.');
+        }
+        if ($invitee->carInvites()->where('id', '=', $car->id)->count() > 0) {
+            return redirect()->back()->with('error', 'You cannot invite a user that is already invited to the car.');
+        }
+
+        $car->users()->attach($invitee, ['activated_at' => null]);
         $car->save();
 
         return redirect('dashboard')->with('success', 'Invite sent successfully.');
     }
 
-    public function manage(int $id){
-        $car = Car::find($id);
+    public function manage(int $carId){
+        if(Car::where('id', '=', $carId)->count() === 0){
+            abort(404);
+        }else if(\request()->user()->cars()->where('id', '=', $carId)->count() === 0){
+            abort(403);
+        }
+
+        $car = Car::find($carId);
         $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
         $drives = $car->drives()->where('refuel_id', '=', null)->orderBy('created_at', 'desc')->get();
-
-//        ddd($this->drivesPerUserGraph($car));
 
         return view('car.manage',[
             'refuels' => $refuels,

@@ -7,18 +7,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100 d-flex justify-content-center">
                     <h1 class="display-1">My Cars</h1>
                 </div>
-                @if(session()->has('success'))
-                    <div class="alert alert-success">
-                        {{ session()->get('success') }}
-                    </div>
-                    <br>
-                @endif
-                @if($errors->any())
-                    <div class="alert alert-danger ">
-                        {{ $errors->all()[0] }}
-                    </div>
-                    <br>
-                @endif
+                <x-validation-messages/>
             </div>
         </div>
     </div>
