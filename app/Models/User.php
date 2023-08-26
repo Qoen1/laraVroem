@@ -59,7 +59,12 @@ class User extends Authenticatable
 
     public function cars(): BelongsToMany
     {
-        return $this->belongsToMany(Car::class);
+        return $this->belongsToMany(Car::class)->wherePivotNotNull('activated_at');
+    }
+
+    public function carInvites(): BelongsToMany
+    {
+        return $this->belongsToMany(Car::class)->wherePivotNull('activated_at');
     }
 
     public function role(): BelongsTo{

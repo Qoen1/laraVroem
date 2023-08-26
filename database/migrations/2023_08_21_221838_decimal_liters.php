@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('car_user', function (Blueprint $table) {
-            $table->foreignId('user_id');
-            $table->foreignId('car_id');
-
+        schema::table('refuels', function (Blueprint $table) {
+            $table->decimal('liters')->change();
         });
     }
 
@@ -23,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+
     }
 };

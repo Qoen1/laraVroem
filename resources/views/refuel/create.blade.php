@@ -41,13 +41,13 @@
                         <div class="row mb-3">
                             <label for="cost" class="col-sm-2 col-form-label">Cost</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="cost">
+                                <input type="number" class="form-control" name="cost" step="0.01">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="liters" class="col-sm-2 col-form-label">Liters</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="liters">
+                                <input type="number" class="form-control" name="liters" step="0.01">
                             </div>
                         </div>
                         <input type="hidden" name="car" value="{{ $car->id }}">

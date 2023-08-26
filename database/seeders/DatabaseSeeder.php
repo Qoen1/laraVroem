@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
                         ->for($user)
                 )
                 ->create();
-            $user->cars()->attach($car);
+            $user->cars()->attach($car, ['activated_at' => now()]);
         }
     }
 }
