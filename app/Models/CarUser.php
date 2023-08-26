@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class CarUser extends Model
 {
     use HasFactory;
+
+
 }

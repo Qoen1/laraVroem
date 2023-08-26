@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\CarUser;
 use App\Models\Refuel;
+use App\Models\User;
 use App\Rules\Ownership;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\View\View;
 use Illuminate\Validation\Rule;
 
 class CarController extends Controller
@@ -47,7 +50,7 @@ class CarController extends Controller
         $car->license_plate = $license_plate;
         $car->save();
 
-        $user->cars()->attach($car);
+        $user->cars()->attach($car, ['activated_at' => now()]);
 
         return redirect()->route('cars')->with('success', 'Car created successfully.');
     }
@@ -96,7 +99,116 @@ class CarController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //TODO: delete car
+    }
+
+    public function share(int $carId){
+        if(Car::where('id', '=', $carId)->count() === 0){
+            abort(404);
+        }else if(\request()->user()->cars()->where('id', '=', $carId)->count() === 0){
+            abort(403);
+        }
+
+        validator(\request()->route()->parameters())->validate([
+            'id' => 'required|exists:cars,id',
+        ]);
+        return view('car.share', ['car' => $carId]);
+    }
+
+    public function  createInvite(){
+        \request()->validate([
+            'invitee' => 'required|email|exists:users,email',
+            'car_id' => 'required|exists:cars,id',
+        ]);
+
+        $car = Car::find(\request('car_id'));
+        $user = auth()->user();
+        $invitee = User::all()->where('email', \request('invitee'))->first();
+
+        if ($user->cars()->where('id', '=', $car->id)->count() === 0) {
+            abort(403);
+        }
+        if ($invitee->id === $user->id) {
+            return redirect()->back()->with('error', 'You cannot invite yourself.');
+        }
+        if ($invitee->cars()->where('id', '=', $car->id)->count() > 0) {
+            return redirect()->back()->with('error', 'You cannot invite a user that is already a member of the car.');
+        }
+        if ($invitee->carInvites()->where('id', '=', $car->id)->count() > 0) {
+            return redirect()->back()->with('error', 'You cannot invite a user that is already invited to the car.');
+        }
+
+        $car->users()->attach($invitee, ['activated_at' => null]);
+        $car->save();
+
+        return redirect('dashboard')->with('success', 'Invite sent successfully.');
+    }
+
+    public function manage(int $carId){
+        if(Car::where('id', '=', $carId)->count() === 0){
+            abort(404);
+        }else if(\request()->user()->cars()->where('id', '=', $carId)->count() === 0){
+            abort(403);
+        }
+
+        $car = Car::find($carId);
+        $refuels = $car->refuels()->orderBy('created_at', 'desc')->get();
+        $drives = $car->drives()->where('refuel_id', '=', null)->orderBy('created_at', 'desc')->get();
+
+        return view('car.manage',[
+            'refuels' => $refuels,
+            'car' => $car,
+            'drives' => $drives,
+            'graph' => $this->drivesPerUserGraph($car),
+            'users' => $car->users,
+        ]);
+    }
+
+    public function  acceptInvite(){
+        \request()->validate([
+            'car_id' => 'required|exists:cars,id',
+        ]);
+        $car = Car::find(\request('car_id'));
+        $user = auth()->user();
+
+        //check if there is an invitation
+        if(!$user->carInvites()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot accept an invite for a car you are not invited to.');
+        }
+
+        if($user->cars()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot decline an invite for a car you are already a member of.');
+        }else{
+            $user->carInvites()->updateExistingPivot($car, ['activated_at' => now()]);
+            $user->save();
+        }
+        return redirect('dashboard')->with('success', 'Invite accepted successfully.');
+
+    }
+
+    public function  declineInvite(){
+        \request()->validate([
+            'car_id' => 'required|exists:cars,id',
+        ]);
+        $car = Car::find(\request('car_id'));
+        $user = auth()->user();
+
+        //check if there is an invitation
+        if(!$user->carInvites()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot accept an invite for a car you are not invited to.');
+        }
+        if($user->cars()->where('id', $car->id)->exists()){
+            return redirect()->route('cars')->with('error', 'You cannot decline an invite for a car you are already a member of.');
+        }else{
+            $user->carInvites()->detach($car);
+            $user->save();
+        }
+        return redirect('dashboard')->with('success', 'Invite declined successfully.');
+    }
+
+    public function removeUser(){
+        //TODO: remove user from car and figure out what to do with his drives and refuels. note: the user cannot delete himself
+
     }
 
     private function drivesPerUserGraph(Car $car){

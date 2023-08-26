@@ -26,21 +26,21 @@
                     @endif
                     
                     <div class="table-container">
-                        <table class="table">
+                        <table class="table bigBoiTable">
                             <thead>
                             <th>date</th>
                             <th>begin odometer</th>
                             <th>end odometer</th>
                             <th>distance</th>
-                            <th>car</th>
+                            <th></th>
                             </thead>
                             @foreach($drives as $drive)
                                 <tr>
-                                    <td>{{ $drive->created_at->format('d-m-Y') }}</td>
-                                    <td>{{ $drive->begin_odometer }}</td>
-                                    <td>{{ $drive->end_odometer }}</td>
-                                    <td>{{ $drive->distance() }}</td>
-                                    <td>{{ $drive->car->name }}</td>
+                                    <td label="date">{{ $drive->created_at->format('d-m-Y') }}</td>
+                                    <td label="begin odometer">{{ $drive->begin_odometer }}</td>
+                                    <td label="end odometer">{{ $drive->end_odometer }}</td>
+                                    <td label="distance">{{ $drive->distance() }}</td>
+                                    <td label="car">{{ $drive->car->name }}</td>
                                 </tr>
                             @endforeach
                         </table>

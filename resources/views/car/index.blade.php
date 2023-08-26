@@ -1,3 +1,5 @@
+{{--TODO: add list of invites--}}
+
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -5,18 +7,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100 d-flex justify-content-center">
                     <h1 class="display-1">My Cars</h1>
                 </div>
-                @if(session()->has('success'))
-                    <div class="alert alert-success">
-                        {{ session()->get('success') }}
-                    </div>
-                    <br>
-                @endif
-                @if($errors->any())
-                    <div class="alert alert-danger ">
-                        {{ $errors->all()[0] }}
-                    </div>
-                    <br>
-                @endif
+                <x-validation-messages/>
             </div>
         </div>
     </div>
@@ -29,7 +20,7 @@
                         <a class="btn btn-outline-primary" href="cars/create">Add Car</a>
                     </div>
                     <div class="table-container">
-                        <table class="table">
+                        <table class="table bigBoiTable">
                             <thead>
                             <th>name</th>
                             <th>licenseplate</th>
@@ -39,11 +30,11 @@
                             </thead>
                             @foreach($cars as $car)
                                 <tr>
-                                    <td>{{ $car->name }}</td>
-                                    <td>{{ $car->license_plate }}</td>
-                                    <td>{{ $car->totalDistance() }}</td>
-                                    <td>{{ $car->trackedDistance() }}</td>
-                                    <td><a class="btn btn-primary" href="cars/{{$car->id}}">details</a></td>
+                                    <td label="name">{{ $car->name }}</td>
+                                    <td label="licenseplate">{{ $car->license_plate }}</td>
+                                    <td label="total driven">{{ $car->totalDistance() }}</td>
+                                    <td label="total tracked">{{ $car->trackedDistance() }}</td>
+                                    <td label=""><a class="btn btn-primary" href="cars/{{$car->id}}">details</a></td>
                                 </tr>
                             @endforeach
                         </table>

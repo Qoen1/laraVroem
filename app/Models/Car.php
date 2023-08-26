@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Car extends Model
 {
+    //TODO: add car admin who has CRUD access to all data in that car (change refuels and drives, and invite/ban users)
     use HasFactory;
 
     public function trackedDistance(){
@@ -96,7 +97,12 @@ class Car extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class,'car_user','car_id','user_id');
+        return $this->belongsToMany(User::class,'car_user','car_id','user_id')->wherePivotNotNull('activated_at');
+    }
+
+    public function invitedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class,'car_user','car_id','user_id')->wherePivotNull('activated_at');
     }
 
     public function refuels(): HasMany

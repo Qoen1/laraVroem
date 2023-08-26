@@ -22,14 +22,24 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/dashboard', function () {
-    return view('dashboard', ['cars' => auth()->user()->cars, 'drives' => DriveController::json()]);
+    return view('dashboard', [
+        'cars' => auth()->user()->cars,
+        'drives' => DriveController::json(),
+        'invites' => auth()->user()->carInvites,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('cars', CarController::class);
+
+    Route::resource('cars', CarController::class)->names(['index' => 'cars.index', 'create' => 'cars.create', 'show' => 'cars.show']);
+    Route::get('/cars/{id}/share', [CarController::class, 'share'])->name('cars.share');
+    Route::post('/cars/share', [CarController::class, 'createInvite'])->name('cars.createInvite');
+    Route::post('/cars/acceptInvite', [CarController::class, 'acceptInvite'])->name('cars.acceptInvite');
+    Route::post('/cars/declineInvite', [CarController::class, 'declineInvite'])->name('cars.declineInvite');
+    Route::get('/cars/{id}/manage', [CarController::class, 'manage'])->name('cars.manage');
 
     Route::get('/drives/create/{car}', [DriveController::class, 'create'])->name('drives.create');
     Route::get('/drives', [DriveController::class, 'index'])->name('drives.index');
@@ -41,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/refuels/{refuel}', [RefuelController::class, 'show'])->name('refuels.show');
     Route::post('/refuels/addDrive', [RefuelController::class, 'add'])->name('refuels.addDrive');
     Route::post('/refuels/removeDrive', [RefuelController::class, 'remove'])->name('refuels.removeDrive');
+    Route::get('/refuels/{id}/manage', [RefuelController::class, 'manage'])->name('refuels.manage');
 });
 
 require __DIR__.'/auth.php';

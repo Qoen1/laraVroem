@@ -21,45 +21,88 @@
                         </div>
                         <br>
                     @endif
-                    <canvas id="Chart"></canvas>
+                    <div style="min-height: 35vh">
+                        <canvas id="Chart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    @if($invites->count() > 0)
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="table-container">
-                    <table class="table">
+                    <table class="w-100">
                         <thead>
                         <tr>
                             <th>Car</th>
-                            <th>Last driver</th>
+                            <th>number plate</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($cars as $car)
-                        <tr>
-                            <td>{{ $car->name }}</td>
-                            @if($car->drives->count() > 0)
-                                <td>{{ $car->drives()->orderBy('created_at', 'desc')->first()->user->name }}</td>
-                            @else
-                                <td>-</td>
-                            @endif
-                            <td class="d-flex align-items-center flex-row">
-                                <a class="btn btn-primary" href="/drives/create/{{ $car->id }}">Add Drive</a>
-                                <div class="vr m-2"></div>
-                                <a class="btn btn-secondary" href="/refuels/create/{{ $car->id }}">Add Refuel</a>
-                                <div class="vr m-2"></div>
-                                <a class="btn btn-secondary" href="cars/{{$car->id}}">details</a>
-                            </td>
-                        </tr>
+                        @foreach($invites as $invite)
+                            <tr>
+                                <td>{{ $invite->name }}</td>
+                                <td>{{ $invite->license_plate }}</td>
+                                <td class="d-flex align-items-center flex-row">
+                                    <form method="post" action="cars/acceptInvite">
+                                        @csrf
+                                        <input type="hidden" name="car_id" value="{{ $invite->id }}">
+                                        <button class="btn border-primary" type="submit">accept</button>
+                                    </form>
+                                    <div class="vr m-2"></div>
+                                    <form method="post" action="cars/declineInvite">
+                                        @csrf
+                                        <input type="hidden" name="car_id" value="{{ $invite->id }}">
+                                        <button class="btn border-danger" type="submit">decline</button>
+                                    </form>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+
+                <table class="table bigBoiTable">
+                    <thead>
+                    <tr>
+                        <th>Car</th>
+                        <th>Last driver</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($cars as $car)
+                        <tr>
+                            <td label="Car">{{ $car->name }}</td>
+                            @if($car->drives->count() > 0)
+                                <td label="Last driver">{{ $car->drives()->orderBy('created_at', 'desc')->first()->user->name }}</td>
+                            @else
+                                <td label="Last driver">-</td>
+                            @endif
+                            <td>
+                                <div class="d-flex align-items-center flex-row flex-wrap"><a class="btn btn-primary" href="/drives/create/{{ $car->id }}">Add Drive</a>
+                                    <div class="vr m-2"></div>
+                                    <a class="btn btn-secondary" href="/refuels/create/{{ $car->id }}">Add Refuel</a>
+                                    <div class="vr m-2"></div>
+                                    <a class="btn btn-secondary" href="cars/{{$car->id}}">details</a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -76,7 +119,7 @@
             kilometers: total_kilometers(row.value),
         }));
 
-        new Chart(
+        let chart = new Chart(
             document.getElementById('Chart'),
             {
                 type: 'line',
@@ -95,7 +138,8 @@
                         y: {
                             beginAtZero: true
                         }
-                    }
+                    },
+                    maintainAspectRatio: false
                 }
             }
         );

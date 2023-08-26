@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('car_user', function (Blueprint $table) {
-            $table->foreignId('user_id');
-            $table->foreignId('car_id');
-
+        schema::table('car_user', function (Blueprint $table) {
+            $table->dateTime('activated_at')->nullable();
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        schema::table('car_user', function (Blueprint $table) {
+            $table->removeColumn('activated_at');
+        });
     }
 };
