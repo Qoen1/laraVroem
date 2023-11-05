@@ -52,7 +52,7 @@ class CarController extends Controller
 
         $user->cars()->attach($car, ['activated_at' => now()]);
 
-        return redirect()->route('cars')->with('success', 'Car created successfully.');
+        return redirect()->route('cars.index')->with('success', 'Car created successfully.');
     }
 
     /**
