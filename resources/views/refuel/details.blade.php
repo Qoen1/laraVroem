@@ -30,6 +30,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div style="height: 40vh" class="d-flex justify-content-center mb-5">
+                        <canvas id="usageChart"></canvas>
+                    </div>
                     <div>
                         <div class="row justify-content-start">
                             <div class="col">driven kilometers:</div>
@@ -143,3 +146,40 @@
         </div>
     </div>
 </x-app-layout>
+
+<script type="module">
+    let users = {{ \Illuminate\Support\Js::from($users) }};
+    let drives = {{ \Illuminate\Support\Js::from($drives) }};
+
+    for(let i=0;i<drives.length;i++){
+        let drive = drives[i];
+        for(let j=0;j<users.length;j++){
+            let user = users[j];
+            if(user.kilometers == undefined) user.kilometers = 0;
+            if(drive.user.id == user.id){
+                user.kilometers += (drive.end_odometer - drive.begin_odometer);
+            }
+        }
+    }
+
+    let labels = [];
+    let data = [];
+    for(let i=0;i<users.length;i++){
+        labels.push(users[i].name);
+        data.push(users[i].kilometers);
+    }
+
+    new Chart(document.getElementById('usageChart'), {
+        type: 'doughnut',
+        data:{
+            labels:labels,
+            datasets:[{
+                label:'driven kilometers',
+                data: data,
+            }]
+        }
+    })
+
+    console.log(users);
+    console.log(drives);
+</script>
