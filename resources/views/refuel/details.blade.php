@@ -156,17 +156,21 @@
         for(let j=0;j<users.length;j++){
             let user = users[j];
             if(user.kilometers == undefined) user.kilometers = 0;
+            if(user.amtOfDrives == undefined) user.amtOfDrives = 0;
             if(drive.user.id == user.id){
                 user.kilometers += (drive.end_odometer - drive.begin_odometer);
+                user.amtOfDrives++;
             }
         }
     }
 
     let labels = [];
-    let data = [];
+    let drivenKilometersData = [];
+    let amountOfDrivesData = [];
     for(let i=0;i<users.length;i++){
         labels.push(users[i].name);
-        data.push(users[i].kilometers);
+        drivenKilometersData.push(users[i].kilometers);
+        amountOfDrivesData.push(users[i].amtOfDrives)
     }
 
     new Chart(document.getElementById('usageChart'), {
@@ -175,9 +179,16 @@
             labels:labels,
             datasets:[{
                 label:'driven kilometers',
-                data: data,
+                data: drivenKilometersData,
+                // circumference: 180,
+                rotation:270
+            },{
+                label:'amount of drives',
+                data: amountOfDrivesData,
+                // circumference: 180,
+                rotation:90
             }]
-        }
+        },
     })
 
     console.log(users);
