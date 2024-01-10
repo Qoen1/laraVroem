@@ -15,7 +15,7 @@ class RefuelController extends Controller
      */
     public function index()
     {
-        $all = Refuel::all()->sortByDesc('created_at');
+        $all = Refuel::with('user')->orderByDesc('created_at')->get();
 
         $refuels = [];
 
