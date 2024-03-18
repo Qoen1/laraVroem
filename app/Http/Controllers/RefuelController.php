@@ -15,21 +15,7 @@ class RefuelController extends Controller
      */
     public function index()
     {
-        $all = Refuel::with('user')->orderByDesc('created_at')->get();
-
-        $refuels = [];
-
-        foreach ($all as $refuel) {
-            $found = false;
-            foreach($refuel->drives as $drive){
-                if ($drive->user->id === auth()->user()->id) {
-                    $found = true;
-                }
-            }
-            if($found){
-                $refuels[] = $refuel;
-            }
-        }
+        $refuels = auth()->user()->refuels;
 
         return view('refuel.index', ['refuels' => $refuels]);
     }

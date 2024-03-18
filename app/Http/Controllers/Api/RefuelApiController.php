@@ -4,25 +4,54 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
+use App\Models\Drive;
 use App\Models\Refuel;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class RefuelApiController extends Controller
 {
-    public function add(){
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return auth()->user()->refuels;
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store()
+    {
         request()->validate([
             'car_id' => 'required|integer|exists:cars,id',
             'liters' => 'required|numeric',
             'price' => 'required|numeric',
-            'timestamp' => 'required|date',
-            'user_id' => 'required|integer|exists:users,id',
+            'beginOdometer' => 'numeric|between:0,99999999999999999999',
+            'endOdometer' => 'numeric|gt:begin|between:0,99999999999999999999',
         ]);
 
-        $car = Car::find(request('car_id'));
+        $user = auth()->user();
+        $car = $user->cars()->find(request('car_id'));
         $amount = request('liters');
+        $timestamp = Carbon::now();
         $price = request('price');
-        $timestamp = request('timestamp');
-        $user = User::find(request('user_id'));
+        $beginOdometer = request('beginOdometer');
+        $endOdometer = request('endOdometer');
+
+        if($car === null){
+            abort(403);
+        }
+
+        $drive = new Drive();
+        $drive->begin_odometer = $beginOdometer;
+        $drive->end_odometer = $endOdometer;
+        $drive->setCreatedAt($timestamp);
+        $drive->car()->associate($car);
+        $drive->user()->associate($user);
+        $drive->save();
 
         $refuel = new Refuel();
         $refuel->liters = $amount;
@@ -41,5 +70,36 @@ class RefuelApiController extends Controller
             'refuel' => $refuel,
             'drives' => $refuel->drives()->get(),
         ];
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $refuels = Refuel::with(['drives.user', 'user', 'car'])
+            ->where('user_id', '=', auth()->user()->id)
+            ->find($id);
+
+        if($refuels == null){
+            abort(404);
+        }
+        return $refuels;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

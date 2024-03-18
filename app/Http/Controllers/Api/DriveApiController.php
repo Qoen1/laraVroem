@@ -6,33 +6,44 @@ use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\Drive;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class DriveApiController extends Controller
 {
-    public function add(){
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return auth()->user()->drives;
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //TODO: fix
         request()->validate([
             'car_id' => 'required|exists:cars,id',
-            'beginOdometer' => 'required',
-            'endOdometer' => 'required',
-            'timestamp' => 'required',
-            'user_id' => 'required|exists:users,id',
+            'beginOdometer' => 'numeric|between:0,99999999999999999999',
+            'endOdometer' => 'numeric|gt:begin|between:0,99999999999999999999'
         ]);
-        $car = Car::find(request('car_id'));
+
+        $user = auth()->user();
+        $car = $user->cars()->find(request('car_id'));
         $beginOdometer = request('beginOdometer');
         $endOdometer = request('endOdometer');
-        $timestamp = request('timestamp');
-        $user = User::find(request('user_id'));
 
-        if($endOdometer < $beginOdometer){
-            return response()->json([
-                'message' => 'End odometer must be greater than begin odometer.'
-            ], 400);
+        if($car === null){
+            abort(403);
         }
 
         $drive = new Drive();
         $drive->begin_odometer = $beginOdometer;
         $drive->end_odometer = $endOdometer;
-        $drive->setCreatedAt($timestamp);
+        $drive->setCreatedAt(Carbon::now());
         $drive->car()->associate($car);
         $drive->user()->associate($user);
         $drive->save();
@@ -40,5 +51,36 @@ class DriveApiController extends Controller
         return ['message' => 'Drive added successfully.',
             'drive' => $drive,
         ];
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $drive = Drive::with('car')
+            ->where('user_id', '=', auth()->user()->id)
+            ->find($id);
+
+        if($drive == null){
+            abort(404);
+        }
+        return $drive;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }
