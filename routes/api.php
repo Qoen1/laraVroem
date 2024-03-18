@@ -21,17 +21,17 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware('auth:sanctum')->group(function (){
     Route::middleware('role:admin')->group(function (){
-        Route::post('/car/{id}/addDrive', [DriveApiController::class, 'store']);
-        Route::post('/car/{id}/addRefuel', [RefuelApiController::class, 'store']);
-
         Route::get('/drives', [DriveApiController::class, 'index']);
         Route::get('/drives/{id}', [DriveApiController::class, 'show']);
+        Route::post('/drives', [DriveApiController::class, 'store']);
 
         Route::get('/refuels', [RefuelApiController::class, 'index']);
         Route::get('/refuels/{id}', [RefuelApiController::class, 'show']);
+        Route::post('/refuels', [RefuelApiController::class, 'store']);
 
         Route::get('/cars', [CarsApiController::class, 'index']);
         Route::get('/cars/{id}', [CarsApiController::class, 'show']);
+        Route::post('/cars', [CarsApiController::class, 'store']);
 
     });
 });

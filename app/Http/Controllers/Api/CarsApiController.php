@@ -29,8 +29,8 @@ class CarsApiController extends Controller
         $car = new Car();
         $car->name = $request['name'];
         $car->license_plate = $request['licensePlate'];
-        $car->users()->attach(auth()->user());
         $car->save();
+        $car->users()->attach(auth()->user());
 
         return $car;
     }
@@ -40,9 +40,10 @@ class CarsApiController extends Controller
      */
     public function show(string $id)
     {
-        $cars = Car::with(['drives', 'refuels', 'users'])
-            ->where('user_id', '=', auth()->user()->id)
-            ->find($id);
+        $cars = auth()->user()->cars()->with(['drives', 'refuels', 'users'])->find($id);
+//        $cars = Car::with(['drives', 'refuels', 'users'])
+//            ->where('users', '=', auth()->user()->id)
+//            ->find($id);
 
         if($cars == null){
             abort(404);

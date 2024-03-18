@@ -30,7 +30,7 @@ class RefuelApiController extends Controller
             'liters' => 'required|numeric',
             'price' => 'required|numeric',
             'beginOdometer' => 'numeric|between:0,99999999999999999999',
-            'endOdometer' => 'numeric|gt:begin|between:0,99999999999999999999',
+            'endOdometer' => 'numeric|gt:beginOdometer|between:0,99999999999999999999',
         ]);
 
         $user = auth()->user();
