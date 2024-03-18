@@ -57,4 +57,11 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function getToken()
+    {
+        $token = auth()->user()->createToken('myApiToken');
+
+        return Redirect::route('dashboard')->with('success', 'your api token is: '.$token->plainTextToken);
+    }
 }
