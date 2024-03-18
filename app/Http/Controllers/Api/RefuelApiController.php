@@ -27,8 +27,8 @@ class RefuelApiController extends Controller
     {
         request()->validate([
             'car_id' => 'required|integer|exists:cars,id',
-            'liters' => 'required|numeric',
-            'price' => 'required|numeric',
+            'liters' => 'required|numeric|between:0,99999999999999999999',
+            'price' => 'required|numeric|between:0,99999999999999999999',
             'beginOdometer' => 'numeric|between:0,99999999999999999999',
             'endOdometer' => 'numeric|gt:beginOdometer|between:0,99999999999999999999',
         ]);
